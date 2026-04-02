@@ -1,7 +1,7 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // THIS STOPS THE WEBGL CRASHING:
+  reactStrictMode: false, 
 };
 
 export default nextConfig;
