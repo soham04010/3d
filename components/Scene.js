@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, ContactShadows } from "@react-three/drei";
 import Bottle from "./Bottle";
 
-export default function Scene() {
+export default function Scene({ flavor }) {
   // This state prevents the Canvas from rendering until the browser is 100% ready
   const [mounted, setMounted] = useState(false);
 
@@ -25,7 +25,7 @@ export default function Scene() {
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
         
         <Suspense fallback={null}>
-          <Bottle />
+          <Bottle flavor={flavor} />
         </Suspense>
         
         <ContactShadows position={[0, -2, 0]} opacity={0.5} scale={10} blur={2} far={4.5} />

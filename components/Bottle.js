@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Bottle(props) {
+export default function Bottle({ flavor, ...props }) {
   const dropGroup = useRef(); 
   const group = useRef(); 
   const mouseGroup = useRef(); 
@@ -51,7 +51,7 @@ export default function Bottle(props) {
           // 2. Identify the Body (The Glossy Label)
           if (name.includes('metal-xy') || name.includes('body') || mat.map !== null || child.name === 'Object_5') {
             const bodyMat = new THREE.MeshStandardMaterial({
-              map: yuzuTexture,
+              map: flavor === 'berry' ? berryTexture : yuzuTexture,
               color: "#ffffff",
               roughness: 0.25, // GLOSSY FINISH (low roughness)
               metalness: 0.8   // Very low metalness so colors stay bright
@@ -89,33 +89,35 @@ export default function Bottle(props) {
     });
 
     return clone;
-  }, [scene, yuzuTexture, berryTexture]);
+  }, [scene, yuzuTexture, berryTexture, flavor]);
 
   useLayoutEffect(() => {
     if (!group.current || !dropGroup.current) return;
 
     let ctx = gsap.context(() => {
       // ===== NEW SOOTHING ENTRANCE ANIMATION =====
-      // Replaced the fast bounce with a slow, premium float-up and gentle spin
-      gsap.from(dropGroup.current.position, {
-        y: -1.5, // Starts slightly lower
-        duration: 3.5, // Much slower so the user has time to watch it
-        delay: 3.4, 
-        ease: "power3.out" // Silky smooth deceleration
-      });
-      gsap.from(dropGroup.current.rotation, {
-        y: -Math.PI / 1.5, // Adds a slow, elegant quarter-turn spin into place
-        x: 0.15, // Subtle backward tilt
-        duration: 3.5, 
-        delay: 3.4, 
-        ease: "power3.out" 
-      });
-      gsap.from(dropGroup.current.scale, {
-        x: 0.8, y: 0.8, z: 0.8, // Slightly scales up as it floats
-        duration: 3.5, 
-        delay: 3.4, 
-        ease: "power3.out" 
-      });
+      if (!flavor) {
+        // Replaced the fast bounce with a slow, premium float-up and gentle spin
+        gsap.from(dropGroup.current.position, {
+          y: -1.5, // Starts slightly lower
+          duration: 3.5, // Much slower so the user has time to watch it
+          delay: 3.4, 
+          ease: "power3.out" // Silky smooth deceleration
+        });
+        gsap.from(dropGroup.current.rotation, {
+          y: -Math.PI / 1.5, // Adds a slow, elegant quarter-turn spin into place
+          x: 0.15, // Subtle backward tilt
+          duration: 3.5, 
+          delay: 3.4, 
+          ease: "power3.out" 
+        });
+        gsap.from(dropGroup.current.scale, {
+          x: 0.8, y: 0.8, z: 0.8, // Slightly scales up as it floats
+          duration: 3.5, 
+          delay: 3.4, 
+          ease: "power3.out" 
+        });
+      }
       // =============================================
 
       gsap.set(group.current.rotation, { y: 0 });
@@ -136,38 +138,39 @@ export default function Bottle(props) {
       tlIngredients.to(group.current.rotation, { y: Math.PI * 4, ease: "power1.inOut" }, 0)
                    .to("#bg-layer", { backgroundColor: "#fcf5f7", ease: "power1.inOut" }, 0);
 
-      // INSTANT GLITCH TEXTURE SWAP
-      ScrollTrigger.create({
-        trigger: "#section-ingredients",
-        start: "top 60%", 
-        onEnter: () => {
-          // Helper function to swap textures on ALL body meshes instantly
-          const setTex = (tex) => {
-            bodyMaterialRef.current.forEach(mat => {
-              mat.map = tex;
-              mat.needsUpdate = true;
-            });
-          };
-          
-          setTimeout(() => setTex(berryTexture), 0);
-          setTimeout(() => setTex(yuzuTexture), 50);
-          setTimeout(() => setTex(berryTexture), 100);
-          setTimeout(() => setTex(yuzuTexture), 150);
-          setTimeout(() => setTex(berryTexture), 200); // Settles on Berry
-        },
-        onLeaveBack: () => {
-          const setTex = (tex) => {
-            bodyMaterialRef.current.forEach(mat => {
-              mat.map = tex;
-              mat.needsUpdate = true;
-            });
-          };
-          
-          setTimeout(() => setTex(yuzuTexture), 0);
-          setTimeout(() => setTex(berryTexture), 50);
-          setTimeout(() => setTex(yuzuTexture), 100); // Settles back on Yuzu
-        }
-      });
+      // INSTANT GLITCH TEXTURE SWAP (Only on main landing page)
+      if (!flavor) {
+        ScrollTrigger.create({
+          trigger: "#section-ingredients",
+          start: "top 60%", 
+          onEnter: () => {
+            const setTex = (tex) => {
+              bodyMaterialRef.current.forEach(mat => {
+                mat.map = tex;
+                mat.needsUpdate = true;
+              });
+            };
+            
+            setTimeout(() => setTex(berryTexture), 0);
+            setTimeout(() => setTex(yuzuTexture), 50);
+            setTimeout(() => setTex(berryTexture), 100);
+            setTimeout(() => setTex(yuzuTexture), 150);
+            setTimeout(() => setTex(berryTexture), 200); // Settles on Berry
+          },
+          onLeaveBack: () => {
+            const setTex = (tex) => {
+              bodyMaterialRef.current.forEach(mat => {
+                mat.map = tex;
+                mat.needsUpdate = true;
+              });
+            };
+            
+            setTimeout(() => setTex(yuzuTexture), 0);
+            setTimeout(() => setTex(berryTexture), 50);
+            setTimeout(() => setTex(yuzuTexture), 100); // Settles back on Yuzu
+          }
+        });
+      }
 
       // CTA
       const tlCta = gsap.timeline({ scrollTrigger: { trigger: "#section-cta", start: "top bottom", end: "center center", scrub: 1 } });
@@ -176,7 +179,7 @@ export default function Bottle(props) {
     });
 
     return () => ctx.revert();
-  }, [yuzuTexture, berryTexture]); 
+  }, [yuzuTexture, berryTexture, flavor]); 
 
   useFrame((state, delta) => {
     if (innerGroup.current) innerGroup.current.rotation.y += delta * 0.3;
