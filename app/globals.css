@@ -9,8 +9,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-syne: var(--font-syne);
+  --font-sans: var(--font-helvetica);
+  --font-syne: var(--font-helvetica);
+  --font-serif: var(--font-helvetica);
 }
 
 @keyframes marquee {
@@ -33,9 +34,23 @@ body {
   overflow-x: hidden;
   /* Helvetica Neue as primary font sitewide */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  /* Hide native cursor on desktop — custom cursor rendered via JS */
+  cursor: none;
 }
 
-/* Force Helvetica Neue on ALL elements */
+/* Force Helvetica Neue on ALL elements + hide native cursor */
 *, *::before, *::after {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  cursor: none;
+}
+
+/* ===== MOBILE / TOUCH DEVICE ADJUSTMENTS ===== */
+@media (pointer: coarse) {
+  body { cursor: auto !important; }
+  * { cursor: auto !important; }
+}
+
+@media (max-width: 768px) {
+  body { cursor: auto !important; }
+  * { cursor: auto !important; }
 }
