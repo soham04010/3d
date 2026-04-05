@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Syne } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -10,7 +11,7 @@ const inter = Inter({
 const syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
-  weight: ["400", "700", "800"], // Extremely bold for Gen Z
+  weight: ["400", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${syne.variable} h-full antialiased cursor-none`}
     >
-      <body className="min-h-full flex flex-col font-sans cursor-none">{children}</body>
+      <body className="min-h-full flex flex-col font-sans cursor-none">
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

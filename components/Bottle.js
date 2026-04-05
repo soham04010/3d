@@ -13,51 +13,81 @@ export default function Bottle(props) {
   const group = useRef(); 
   const mouseGroup = useRef(); 
   const innerGroup = useRef(); 
-  const berryRef = useRef();
+
+  // We use an array to store ALL body materials so the glitch swap never fails
+  const bodyMaterialRef = useRef([]);
 
   const { scene } = useGLTF('/bottle.glb');
   const yuzuTexture = useTexture('/yuzu.png');
   const berryTexture = useTexture('/berry.png');
 
-  yuzuTexture.flipY = false;
-  yuzuTexture.colorSpace = THREE.SRGBColorSpace;
-  berryTexture.flipY = false;
-  berryTexture.colorSpace = THREE.SRGBColorSpace;
+  [yuzuTexture, berryTexture].forEach(t => {
+    t.flipY = false;
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.wrapS = THREE.RepeatWrapping;
+    t.repeat.set(1, 1);
+  });
 
-  // ===== AUTO-DETECT & PRESERVE HIERARCHY =====
-  // This safely clones the client's file so it never crashes, no matter what they name the parts inside!
   const canModel = useMemo(() => {
     const clone = scene.clone();
-    let maxVerts = 0;
-    let mainBody = null;
+    bodyMaterialRef.current = []; // Reset the array
 
     clone.traverse((child) => {
       if (child.isMesh) {
-        const verts = child.geometry?.attributes?.position?.count || 0;
-        if (verts > maxVerts) {
-          maxVerts = verts;
-          mainBody = child;
-        }
-      }
-    });
-
-    clone.traverse((child) => {
-      if (child.isMesh) {
-        if (child === mainBody) {
-          child.material = new THREE.MeshStandardMaterial({ map: yuzuTexture, roughness: 0.15, metalness: 0.3 });
+        
+        // Helper function to process individual materials safely
+        const processMaterial = (mat) => {
+          const name = mat.name.toLowerCase();
           
-          const berryMesh = new THREE.Mesh(
-            child.geometry,
-            new THREE.MeshStandardMaterial({ map: berryTexture, roughness: 0.15, metalness: 0.3, transparent: true, opacity: 0, depthWrite: false })
-          );
-          berryMesh.scale.set(1.001, 1.001, 1.001);
-          berryRef.current = berryMesh.material;
-          child.add(berryMesh);
+          // 1. Identify Top/Bottom Lids and Rims (Pure Silver)
+          if (name.includes('metal-z') || name.includes('opener') || name.includes('top') || name.includes('bottom')) {
+            return new THREE.MeshStandardMaterial({
+              color: "#d0d0d0",
+              roughness: 0.2,
+              metalness: 0.9 // Shiny metallic
+            });
+          }
+
+          // 2. Identify the Body (The Glossy Label)
+          if (name.includes('metal-xy') || name.includes('body') || mat.map !== null || child.name === 'Object_5') {
+            const bodyMat = new THREE.MeshStandardMaterial({
+              map: yuzuTexture,
+              color: "#ffffff",
+              roughness: 0.25, // GLOSSY FINISH (low roughness)
+              metalness: 0.8   // Very low metalness so colors stay bright
+            });
+            bodyMaterialRef.current.push(bodyMat); // Save for glitch swap
+            return bodyMat;
+          }
+
+          // Fallback for any other weird parts
+          return new THREE.MeshStandardMaterial({
+            color: "#d0d0d0",
+            roughness: 0.2,
+            metalness: 0.9
+          });
+        };
+
+        // Apply material safely whether it's a single material or an array of materials
+        if (Array.isArray(child.material)) {
+          child.material = child.material.map(processMaterial);
         } else {
-          child.material = new THREE.MeshStandardMaterial({ color: "#ffffff", roughness: 0.05, metalness: 0.8 });
+          child.material = processMaterial(child.material);
+        }
+
+        // Auto-fix rotation if the artist exported it laying flat
+        child.geometry.computeBoundingBox();
+        const box = child.geometry.boundingBox;
+        if (box) {
+          const size = new THREE.Vector3();
+          box.getSize(size);
+          if (size.x > size.y * 1.5) {
+             child.rotation.z = Math.PI / 2;
+          }
         }
       }
     });
+
     return clone;
   }, [scene, yuzuTexture, berryTexture]);
 
@@ -65,94 +95,109 @@ export default function Bottle(props) {
     if (!group.current || !dropGroup.current) return;
 
     let ctx = gsap.context(() => {
-      // ===== THE DROP ANIMATION =====
+      // ===== NEW SOOTHING ENTRANCE ANIMATION =====
+      // Replaced the fast bounce with a slow, premium float-up and gentle spin
       gsap.from(dropGroup.current.position, {
-        y: 8, 
-        duration: 1.8,
+        y: -1.5, // Starts slightly lower
+        duration: 3.5, // Much slower so the user has time to watch it
         delay: 3.4, 
-        ease: "bounce.out" 
+        ease: "power3.out" // Silky smooth deceleration
       });
+      gsap.from(dropGroup.current.rotation, {
+        y: -Math.PI / 1.5, // Adds a slow, elegant quarter-turn spin into place
+        x: 0.15, // Subtle backward tilt
+        duration: 3.5, 
+        delay: 3.4, 
+        ease: "power3.out" 
+      });
+      gsap.from(dropGroup.current.scale, {
+        x: 0.8, y: 0.8, z: 0.8, // Slightly scales up as it floats
+        duration: 3.5, 
+        delay: 3.4, 
+        ease: "power3.out" 
+      });
+      // =============================================
 
-      // ===== SCROLL ANIMATIONS =====
       gsap.set(group.current.rotation, { y: 0 });
-      gsap.set(group.current.scale, { x: 1, y: 1, z: 1 }); 
       gsap.set(group.current.position, { y: 0 }); 
-      gsap.set("#bg-layer", { backgroundColor: "#ffffff" }); 
 
-      if (berryRef.current) gsap.set(berryRef.current, { opacity: 0 });
-
-      // WHAT IS DANG 
-      const tlWhatIs = gsap.timeline({
-        scrollTrigger: { trigger: "#section-whatis", start: "top bottom", end: "center center", scrub: 1 },
-      });
+      // WHAT IS DANG
+      const tlWhatIs = gsap.timeline({ scrollTrigger: { trigger: "#section-whatis", start: "top bottom", end: "center center", scrub: 1 } });
       tlWhatIs.to(group.current.rotation, { y: 0, ease: "none" }, 0)
               .to("#bg-layer", { backgroundColor: "#fafafa", ease: "none" }, 0); 
 
-      // YUZU 
-      const tlDetails = gsap.timeline({
-        scrollTrigger: { trigger: "#section-details", start: "top bottom", end: "center center", scrub: 1 },
-      });
+      // YUZU ROTATION
+      const tlDetails = gsap.timeline({ scrollTrigger: { trigger: "#section-details", start: "top bottom", end: "center center", scrub: 1 } });
       tlDetails.to(group.current.rotation, { y: Math.PI * 2, ease: "power1.inOut" }, 0)
                .to("#bg-layer", { backgroundColor: "#f9fcf5", ease: "power1.inOut" }, 0);
 
-      // BERRY 
-      const tlIngredients = gsap.timeline({
-        scrollTrigger: { trigger: "#section-ingredients", start: "top bottom", end: "center center", scrub: 1 },
-      });
+      // BERRY ROTATION
+      const tlIngredients = gsap.timeline({ scrollTrigger: { trigger: "#section-ingredients", start: "top bottom", end: "center center", scrub: 1 } });
       tlIngredients.to(group.current.rotation, { y: Math.PI * 4, ease: "power1.inOut" }, 0)
-                   .to(group.current.scale, { x: 0.95, y: 0.95, z: 0.95, ease: "power1.inOut" }, 0)
                    .to("#bg-layer", { backgroundColor: "#fcf5f7", ease: "power1.inOut" }, 0);
 
-      if (berryRef.current) {
-        tlIngredients.to(berryRef.current, {
-          keyframes: [
-            { opacity: 0, duration: 0.1 }, { opacity: 1, duration: 0.05 }, { opacity: 0, duration: 0.05 },
-            { opacity: 1, duration: 0.05 }, { opacity: 0.3, duration: 0.1 }, { opacity: 1, duration: 0.65 }
-          ],
-          ease: "none"
-        }, 0);
-      }
-
-      // CTA 
-      const tlCta = gsap.timeline({
-        scrollTrigger: { trigger: "#section-cta", start: "top bottom", end: "center center", scrub: 1 },
+      // INSTANT GLITCH TEXTURE SWAP
+      ScrollTrigger.create({
+        trigger: "#section-ingredients",
+        start: "top 60%", 
+        onEnter: () => {
+          // Helper function to swap textures on ALL body meshes instantly
+          const setTex = (tex) => {
+            bodyMaterialRef.current.forEach(mat => {
+              mat.map = tex;
+              mat.needsUpdate = true;
+            });
+          };
+          
+          setTimeout(() => setTex(berryTexture), 0);
+          setTimeout(() => setTex(yuzuTexture), 50);
+          setTimeout(() => setTex(berryTexture), 100);
+          setTimeout(() => setTex(yuzuTexture), 150);
+          setTimeout(() => setTex(berryTexture), 200); // Settles on Berry
+        },
+        onLeaveBack: () => {
+          const setTex = (tex) => {
+            bodyMaterialRef.current.forEach(mat => {
+              mat.map = tex;
+              mat.needsUpdate = true;
+            });
+          };
+          
+          setTimeout(() => setTex(yuzuTexture), 0);
+          setTimeout(() => setTex(berryTexture), 50);
+          setTimeout(() => setTex(yuzuTexture), 100); // Settles back on Yuzu
+        }
       });
-      tlCta.to(group.current.rotation, { y: Math.PI * 6, ease: "power1.inOut" }, 0)
-           .to(group.current.scale, { x: 1.05, y: 1.05, z: 1.05, ease: "power1.inOut" }, 0)
-           .to(group.current.position, { y: 1.2, ease: "power1.inOut" }, 0)
-           .to("#bg-layer", { backgroundColor: "#ffffff", ease: "power1.inOut" }, 0);
+
+      // CTA
+      const tlCta = gsap.timeline({ scrollTrigger: { trigger: "#section-cta", start: "top bottom", end: "center center", scrub: 1 } });
+      tlCta.to(group.current.rotation, { y: Math.PI * 6 }, 0)
+           .to("#bg-layer", { backgroundColor: "#ffffff" }, 0);
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [yuzuTexture, berryTexture]); 
 
   useFrame((state, delta) => {
-    if (innerGroup.current) {
-      innerGroup.current.rotation.x = 0.3; 
-      innerGroup.current.rotation.z = 0.2; 
-      innerGroup.current.rotation.y += delta * 0.2; 
-    }
+    if (innerGroup.current) innerGroup.current.rotation.y += delta * 0.3;
     if (mouseGroup.current) {
-      const targetX = (state.pointer.x * Math.PI) / 10; 
-      const targetY = (state.pointer.y * Math.PI) / 10;
-      mouseGroup.current.rotation.y = THREE.MathUtils.lerp(mouseGroup.current.rotation.y, targetX, 0.05);
-      mouseGroup.current.rotation.x = THREE.MathUtils.lerp(mouseGroup.current.rotation.x, -targetY, 0.05);
+      mouseGroup.current.rotation.y = THREE.MathUtils.lerp(mouseGroup.current.rotation.y, (state.pointer.x * Math.PI) / 10, 0.05);
+      mouseGroup.current.rotation.x = THREE.MathUtils.lerp(mouseGroup.current.rotation.x, -(state.pointer.y * Math.PI) / 10, 0.05);
     }
   });
 
   return (
     <group ref={dropGroup}>
-      <group ref={group} {...props} dispose={null} scale={1} position={[0, 0, 0]}>
+      <group ref={group} {...props}>
         <group ref={mouseGroup}>
           <group ref={innerGroup}>
+            
             <ambientLight intensity={1.5} /> 
             <spotLight position={[0, 5, 8]} angle={0.4} penumbra={0.8} intensity={20} color="#ffffff" />
             <spotLight position={[-5, 5, -5]} angle={0.5} penumbra={0.5} intensity={15} color="#ffffff" />
             <directionalLight position={[2, 0, 5]} intensity={1.5} color="#ffffff" />
 
-            {/* THE FIX: MASSIVELY SCALED UP! */}
-            {/* If it is still too small, change scale={25} to scale={40}. If too big, try scale={10} */}
-            <group scale={15} position={[0, -1.5, 0]}>
+            <group scale={15} position={[0, -1.2, 0]}>
               <primitive object={canModel} />
             </group>
             
