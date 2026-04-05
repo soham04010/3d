@@ -9,7 +9,6 @@ const Scene = lazy(() => import('@/components/Scene'));
 
 const Index = () => {
   const mainRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
   
   const [typedText, setTypedText] = useState("");
   const [showSubtext, setShowSubtext] = useState(false);
@@ -44,7 +43,7 @@ const Index = () => {
     setIsError(false);
     
     const formData = new FormData(event.currentTarget);
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE");
+    formData.append("access_key", "2671cc0e-e509-42d7-a527-f3a2e1d06c81");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
@@ -64,13 +63,6 @@ const Index = () => {
     }
   };
 
-  useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      gsap.to(cursorRef.current, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'power2.out' });
-    };
-    window.addEventListener('mousemove', moveCursor);
-    return () => window.removeEventListener('mousemove', moveCursor);
-  }, []);
 
   useLayoutEffect(() => {
     if (!isLoadingFinished) return; 
@@ -81,26 +73,8 @@ const Index = () => {
         opacity: 0
       });
 
-      // ===== THE DELAYED, SOOTHING TEXT TIMELINE =====
-      // Setup the initial hidden, pushed-down state
-      gsap.set('.hero-intro-text', { y: 50, opacity: 0 });
+      // Hero background fade out when scrolling to What is Dang
 
-      const tlHeroText = gsap.timeline({
-        scrollTrigger: { trigger: '#section-hero', start: 'top top', end: 'bottom bottom', scrub: 1 }
-      });
-
-      tlHeroText
-        // 1. First scroll down: Do nothing, keep it hidden
-        .to('.hero-intro-text', { opacity: 0, y: 50, duration: 0.2 })
-        // 2. Slide up and fade in smoothly
-        .to('.hero-intro-text', { opacity: 1, y: 0, duration: 0.15 })
-        // 3. Hold perfectly still for 2-3 scrolls
-        .to('.hero-intro-text', { opacity: 1, y: 0, duration: 0.55 })
-        // 4. Fade out quickly right before the "What is Dang" section comes up (zero gaps)
-        .to('.hero-intro-text', { opacity: 0, y: -20, duration: 0.1 });
-
-
-      // WHAT IS DANG
       gsap.from('.whatis-item', {
         scrollTrigger: { trigger: '#section-whatis', start: 'top 70%', end: 'center center', scrub: 1 },
         y: 30, opacity: 0, stagger: 0.15, ease: 'power2.out'
@@ -128,6 +102,51 @@ const Index = () => {
         .animate-railway { width: 200%; animation: railway 25s linear infinite; display: flex; }
         .text-outline-yuzu { -webkit-text-stroke: 2px #dce882; color: transparent; }
         .text-outline-berry { -webkit-text-stroke: 2px #f2a7b8; color: transparent; }
+        
+        /* ===== HERO ZERO CARDS STYLING ===== */
+        .zero-card {
+          background: rgba(255, 255, 255, 0.72);
+          backdrop-filter: blur(24px) saturate(180%);
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.5);
+          border-radius: 20px;
+          padding: 20px 28px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+          transition: box-shadow 0.3s ease;
+        }
+        .zero-card:hover {
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.10);
+        }
+        .zero-card .zero-number {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-size: 42px;
+          font-weight: 900;
+          line-height: 1;
+          color: #111;
+          letter-spacing: -0.03em;
+        }
+        .zero-card .zero-label {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #666;
+          margin-top: 4px;
+        }
+        
+        @media (max-width: 768px) {
+          .zero-card {
+            padding: 14px 18px;
+            border-radius: 14px;
+          }
+          .zero-card .zero-number {
+            font-size: 28px;
+          }
+          .zero-card .zero-label {
+            font-size: 9px;
+          }
+        }
       `}</style>
 
       {/* ===== LOADING OVERLAY ===== */}
@@ -141,7 +160,6 @@ const Index = () => {
         </p>
       </div>
 
-      <div ref={cursorRef} className="fixed top-0 left-0 w-3 h-3 bg-black rounded-full pointer-events-none z-[999] mix-blend-difference -translate-x-1/2 -translate-y-1/2 hidden md:block" />
 
       {/* MINIMALIST BACKGROUND + HERO IMAGE */}
       <div id="bg-layer" className="fixed inset-0 z-0 transition-colors duration-700" style={{ backgroundColor: '#ffffff' }}>
@@ -151,26 +169,15 @@ const Index = () => {
       {/* 3D SCENE (z-10) */}
       <Suspense fallback={null}>
         <div className="fixed inset-0 z-[10] pointer-events-none">
-          <Scene />
+          <Scene flavor={undefined} />
         </div>
       </Suspense>
 
       <div ref={mainRef} className="relative text-black cursor-none">
         
         {/* ===== SECTION 1: HERO ===== */}
-        {/* Increased to 400vh so you get a massive, luxurious scroll duration where the text just sits there */}
-        <section id="section-hero" className="relative min-h-[400vh]">
-          {/* This container sticks to the screen while you scroll down the 400vh */}
-          <div className="sticky top-0 h-screen flex flex-col items-center justify-end pb-[12vh] px-6 md:px-16 pointer-events-none z-[20]">
-            
-            {/* The text container (starts invisible, controlled by GSAP timeline) */}
-            <div className="hero-intro-text max-w-3xl text-center">
-              <p className="font-sans font-medium text-sm md:text-base text-gray-800 leading-relaxed bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-white/50">
-                Dang has been crafted with the goal of "the rest is zero". 0 added sugar, 0 Preservatives, 0 Colour, 0 caffinene, 0 stablizers, without colorants to make the experience even purer and more genuine. All elements are naturally lactose-free and vegan friendly.
-              </p>
-            </div>
-
-          </div>
+        <section id="section-hero" className="relative min-h-screen">
+          {/* Empty section to allow scrolling past the 3D bottle which stays fixed in the background */}
         </section>
 
         {/* ===== SECTION 1.5: WHAT IS DANG ===== */}
@@ -302,14 +309,21 @@ const Index = () => {
             
             <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
               <input type="text" name="name" required placeholder="Name" className="p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors" />
-              <input type="email" name="email" required placeholder="Email" className="p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors" />
-              <textarea name="message" required placeholder="What's up?" rows={4} className="p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors resize-none" />
+              <input type="email" name="email" required placeholder="Company Email" className="p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors" />
+              <input type="tel" name="phone" required placeholder="Phone Number" className="p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors" />
+              <textarea name="message" required placeholder="Message" rows={4} className="p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors resize-none" />
               <input type="hidden" name="subject" value="New Website Submission for Dang Soda" />
               <button type="submit" className="bg-black text-white font-sans font-medium text-xs tracking-widest uppercase py-4 rounded-lg mt-2 hover:bg-gray-800 transition-colors">
                 Send Message
               </button>
               {submitStatus && <div className={`mt-2 font-sans font-medium text-center text-xs ${isError ? 'text-red-500' : 'text-green-600'}`}>{submitStatus}</div>}
             </form>
+
+            <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col gap-2">
+              <h3 className="font-sans font-bold text-[10px] tracking-widest text-gray-400 uppercase">Our Contacts</h3>
+              <a href="mailto:humans@drinkdang.com" className="font-sans text-sm font-medium text-black hover:text-gray-600 transition-colors">humans@drinkdang.com</a>
+              <a href="tel:+919823482342" className="font-sans text-sm font-medium text-black hover:text-gray-600 transition-colors">+91 9823482342</a>
+            </div>
           </div>
         </div>
       )}

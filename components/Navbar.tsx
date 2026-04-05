@@ -3,12 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import ExpandedOverlay from "./ExpandedOverlay";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
+  const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
-  const [activeLabel, setActiveLabel] = useState<"yuzu" | "berry" | null>(null);
+  const [overlayType, setOverlayType] = useState<"product" | "merch" | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -17,56 +21,50 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    ScrollTrigger.create({
-      trigger: "#section-details",
-      start: "top 60%", end: "bottom 40%",
-      onEnter: () => setActiveLabel("yuzu"),
-      onLeaveBack: () => setActiveLabel(null),
-    });
 
-    ScrollTrigger.create({
-      trigger: "#section-ingredients",
-      start: "top 60%", end: "bottom 40%",
-      onEnter: () => setActiveLabel("berry"),
-      onLeaveBack: () => setActiveLabel("yuzu"),
-    });
-
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-  }, []);
 
   useEffect(() => {
-    // 1. Set Navbar to start exactly in the middle of the screen
-    gsap.set(navRef.current, { top: "50vh", yPercent: -50 });
-    
-    // 2. Smooth fade in when site loads
-    gsap.from(navRef.current, { opacity: 0, duration: 1.2, delay: 3.6, ease: "power3.out" });
+    if (pathname === "/") {
+      // 1. Set Navbar to start exactly in the middle of the screen
+      gsap.set(navRef.current, { top: "50vh", yPercent: -50 });
+      
+      // 2. Smooth fade in when site loads
+      gsap.from(navRef.current, { opacity: 0, duration: 1.2, delay: 3.6, ease: "power3.out" });
 
-    // 3. Glide to the top as the user starts scrolling
-    gsap.to(navRef.current, {
-      top: "18px",       // Docks at the top edge
-      yPercent: 0,       // Resets the center transform
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "300px top", // Finishes gliding up after 300px of scroll
-        scrub: 1,
-      }
-    });
-  }, []);
+      // 3. Glide to the top as the user starts scrolling
+      gsap.to(navRef.current, {
+        top: "18px",       // Docks at the top edge
+        yPercent: 0,       // Resets the center transform
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "300px top", // Finishes gliding up after 300px of scroll
+          scrub: 1,
+        }
+      });
+    } else {
+      // On other pages (Product, Merch), just dock it to the top immediately.
+      gsap.set(navRef.current, { top: "18px", yPercent: 0, opacity: 1 });
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, [pathname]);
 
   return (
+    <>
     <nav ref={navRef} className="navbar-root">
       <div className={`navbar-pill ${scrolled ? "navbar-pill--scrolled" : ""}`}>
 
         {/* LEFT LINKS */}
         <div className="navbar-links">
-          <a href="#section-whatis" className="navbar-link">About</a>
-          <a href="#section-details" className="navbar-link">Product</a>
+          <a href="/#section-whatis" className="navbar-link">About</a>
+          <button onClick={() => setOverlayType("product")} className="navbar-link bg-transparent border-none p-0 outline-none">Product</button>
         </div>
 
         {/* CENTER LOGO */}
-        <div className="navbar-logo">
+        <Link href="/" className="navbar-logo">
           <Image
             src="/logo.png"
             alt="Dang Soda"
@@ -75,19 +73,13 @@ export default function Navbar() {
             style={{ objectFit: "contain", maxHeight: "40px" }}
             priority
           />
-        </div>
+        </Link>
 
         {/* RIGHT LINKS */}
         <div className="navbar-links">
-          <a href="#section-cta" className="navbar-link">Merch</a>
-          <a href="#section-cta" className="navbar-link">Contact&nbsp;Us</a>
+          <button onClick={() => setOverlayType("merch")} className="navbar-link bg-transparent border-none p-0 outline-none">Merch</button>
+          <a href="/#section-cta" className="navbar-link">Contact&nbsp;Us</a>
         </div>
-      </div>
-
-      {/* FLAVOR LABEL PILL */}
-      <div className={`flavor-label ${activeLabel === "yuzu" ? "flavor-label--yuzu flavor-label--visible" : activeLabel === "berry" ? "flavor-label--berry flavor-label--visible" : ""}`}>
-        {activeLabel === "yuzu" && "✦ Yuzu Citrus"}
-        {activeLabel === "berry" && "✦ Berry Blast"}
       </div>
 
       <style jsx>{`
@@ -103,14 +95,14 @@ export default function Navbar() {
           gap: 48px; /* Reduced spacing between logo and links */
           width: max-content; 
           max-width: 95vw;
-          background: rgba(255, 255, 255, 0.82);
-          backdrop-filter: blur(20px) saturate(180%); border-radius: 999px;
-          padding: 10px 40px; border: 1px solid rgba(0, 0, 0, 0.08);
+          background: #ffffff; /* Solid white background */
+          border-radius: 999px;
+          padding: 10px 40px; border: 1px solid rgba(0, 0, 0, 0.08); /* Keeps pill outline subtle */
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06); pointer-events: all;
           transition: box-shadow 0.3s ease, background 0.3s ease;
         }
         
-        .navbar-pill--scrolled { background: rgba(255, 255, 255, 0.95); box-shadow: 0 8px 40px rgba(0, 0, 0, 0.10); }
+        .navbar-pill--scrolled { background: #ffffff; box-shadow: 0 8px 40px rgba(0, 0, 0, 0.10); }
         .navbar-links { display: flex; align-items: center; gap: 32px; }
         .navbar-link {
           font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
@@ -125,15 +117,6 @@ export default function Navbar() {
         .navbar-link:hover::after { width: 100%; }
         .navbar-logo { display: flex; align-items: center; justify-content: center; }
         
-        .flavor-label {
-          margin-top: 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
-          padding: 6px 18px; border-radius: 999px; opacity: 0; transform: translateY(-6px);
-          transition: opacity 0.35s ease, transform 0.35s ease, background 0.35s ease, color 0.35s ease; pointer-events: none;
-        }
-        .flavor-label--visible { opacity: 1; transform: translateY(0); }
-        .flavor-label--yuzu { background: #f0f5d6; color: #6a8920; border: 1px solid rgba(106, 137, 32, 0.25); }
-        .flavor-label--berry { background: #fceef3; color: #c44d6d; border: 1px solid rgba(196, 77, 109, 0.25); }
-        
         @media (max-width: 640px) {
           .navbar-pill { padding: 8px 24px; gap: 20px; }
           .navbar-links { gap: 16px; }
@@ -141,5 +124,7 @@ export default function Navbar() {
         }
       `}</style>
     </nav>
+    <ExpandedOverlay isOpen={overlayType !== null} type={overlayType} onClose={() => setOverlayType(null)} />
+    </>
   );
 }
