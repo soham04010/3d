@@ -11,7 +11,6 @@ const Index = () => {
   const mainRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   
-  // Loading & Form States
   const [typedText, setTypedText] = useState("");
   const [showSubtext, setShowSubtext] = useState(false);
   const [isLoadingFinished, setIsLoadingFinished] = useState(false);
@@ -19,7 +18,6 @@ const Index = () => {
   const [submitStatus, setSubmitStatus] = useState(""); 
   const [isError, setIsError] = useState(false);
 
-  // TYPEWRITER LOADING LOGIC
   useEffect(() => {
     const text = '"A Soda for better you"';
     let i = 0;
@@ -31,20 +29,15 @@ const Index = () => {
         setTimeout(() => setShowSubtext(true), 600); 
         setTimeout(() => {
           gsap.to('.loading-overlay', {
-            yPercent: -100,
-            duration: 1.2,
-            ease: 'power4.inOut',
+            yPercent: -100, duration: 1.2, ease: 'power4.inOut',
             onComplete: () => setIsLoadingFinished(true)
           });
-          gsap.from('.hero-left', { x: -50, opacity: 0, duration: 1.5, ease: 'power3.out', delay: 0.2 });
-          gsap.from('.hero-right', { x: 50, opacity: 0, duration: 1.5, ease: 'power3.out', delay: 0.4 });
         }, 2800); 
       }
     }, 70); 
     return () => clearInterval(interval);
   }, []);
 
-  // Web3Forms Submission Logic
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitStatus("Sending...");
@@ -71,7 +64,6 @@ const Index = () => {
     }
   };
 
-  // Custom Minimal Cursor
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       gsap.to(cursorRef.current, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'power2.out' });
@@ -84,24 +76,42 @@ const Index = () => {
     if (!isLoadingFinished) return; 
 
     const ctx = gsap.context(() => {
-      // Hero Image Fade Out
       gsap.to('.hero-bg', {
         scrollTrigger: { trigger: '#section-whatis', start: 'top bottom', end: 'top center', scrub: 1 },
         opacity: 0
       });
 
-      // WHAT IS DANG - Simple fade in, no complex scrub delays
+      // ===== THE DELAYED, SOOTHING TEXT TIMELINE =====
+      // Setup the initial hidden, pushed-down state
+      gsap.set('.hero-intro-text', { y: 50, opacity: 0 });
+
+      const tlHeroText = gsap.timeline({
+        scrollTrigger: { trigger: '#section-hero', start: 'top top', end: 'bottom bottom', scrub: 1 }
+      });
+
+      tlHeroText
+        // 1. First scroll down: Do nothing, keep it hidden
+        .to('.hero-intro-text', { opacity: 0, y: 50, duration: 0.2 })
+        // 2. Slide up and fade in smoothly
+        .to('.hero-intro-text', { opacity: 1, y: 0, duration: 0.15 })
+        // 3. Hold perfectly still for 2-3 scrolls
+        .to('.hero-intro-text', { opacity: 1, y: 0, duration: 0.55 })
+        // 4. Fade out quickly right before the "What is Dang" section comes up (zero gaps)
+        .to('.hero-intro-text', { opacity: 0, y: -20, duration: 0.1 });
+
+
+      // WHAT IS DANG
       gsap.from('.whatis-item', {
         scrollTrigger: { trigger: '#section-whatis', start: 'top 70%', end: 'center center', scrub: 1 },
         y: 30, opacity: 0, stagger: 0.15, ease: 'power2.out'
       });
 
-      // YUZU Animations
+      // YUZU
       gsap.from('.yuzu-head', { scrollTrigger: { trigger: '#section-details', start: 'top 60%', end: 'center center', scrub: 1 }, x: -50, opacity: 0, ease: 'power2.out' });
       gsap.from('.yuzu-desc', { scrollTrigger: { trigger: '#section-details', start: 'top 60%', end: 'center center', scrub: 1 }, x: 50, opacity: 0, ease: 'power2.out' });
       gsap.from('.yuzu-item', { scrollTrigger: { trigger: '#section-details', start: 'top 50%', end: 'center center', scrub: 1 }, y: 30, opacity: 0, stagger: 0.15, ease: 'power2.out' });
 
-      // BERRY Animations
+      // BERRY
       gsap.from('.berry-head', { scrollTrigger: { trigger: '#section-ingredients', start: 'top 60%', end: 'center center', scrub: 1 }, x: -50, opacity: 0, ease: 'power2.out' });
       gsap.from('.berry-desc', { scrollTrigger: { trigger: '#section-ingredients', start: 'top 60%', end: 'center center', scrub: 1 }, x: 50, opacity: 0, ease: 'power2.out' });
       gsap.from('.berry-item', { scrollTrigger: { trigger: '#section-ingredients', start: 'top 50%', end: 'center center', scrub: 1 }, y: 30, opacity: 0, stagger: 0.15, ease: 'power2.out' });
@@ -133,7 +143,7 @@ const Index = () => {
 
       <div ref={cursorRef} className="fixed top-0 left-0 w-3 h-3 bg-black rounded-full pointer-events-none z-[999] mix-blend-difference -translate-x-1/2 -translate-y-1/2 hidden md:block" />
 
-      {/* MINIMALIST BACKGROUND + HERO IMAGE (More visible now) */}
+      {/* MINIMALIST BACKGROUND + HERO IMAGE */}
       <div id="bg-layer" className="fixed inset-0 z-0 transition-colors duration-700" style={{ backgroundColor: '#ffffff' }}>
         <img src="/hero.jpg" alt="Hero" className="hero-bg absolute inset-0 w-full h-full object-cover opacity-70" />
       </div>
@@ -145,36 +155,32 @@ const Index = () => {
         </div>
       </Suspense>
 
-      {/* SCROLLING CONTENT WRAPPER */}
       <div ref={mainRef} className="relative text-black cursor-none">
         
         {/* ===== SECTION 1: HERO ===== */}
-        <section id="section-hero" className="relative h-screen flex items-center px-6 md:px-16">
-          <div className="hero-left absolute left-4 md:left-16 w-[40%] md:max-w-[400px] z-[20] pointer-events-none">
-            <h1 className="font-sans font-black text-5xl md:text-[8rem] leading-[0.8] tracking-tighter text-black uppercase">Dang</h1>
-            <h1 className="font-sans font-black text-5xl md:text-[8rem] leading-[0.8] tracking-tighter text-black uppercase">Soda</h1>
-          </div>
-
-          <div className="hero-right absolute right-4 md:right-16 w-[45%] md:max-w-[400px] z-[20] pointer-events-none flex flex-col items-end text-right">
-            <p className="font-serif text-lg md:text-3xl italic text-gray-900 font-bold drop-shadow-md">
-              "A Soda for better you"
-            </p>
-            <div className="mt-4 border border-gray-300 px-4 py-2 rounded-full text-[10px] md:text-xs font-bold tracking-widest text-black bg-white/80 backdrop-blur-md uppercase">
-              -Crafted by a pharmacist and a chef. For Bharat.
+        {/* Increased to 400vh so you get a massive, luxurious scroll duration where the text just sits there */}
+        <section id="section-hero" className="relative min-h-[400vh]">
+          {/* This container sticks to the screen while you scroll down the 400vh */}
+          <div className="sticky top-0 h-screen flex flex-col items-center justify-end pb-[12vh] px-6 md:px-16 pointer-events-none z-[20]">
+            
+            {/* The text container (starts invisible, controlled by GSAP timeline) */}
+            <div className="hero-intro-text max-w-3xl text-center">
+              <p className="font-sans font-medium text-sm md:text-base text-gray-800 leading-relaxed bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-white/50">
+                Dang has been crafted with the goal of "the rest is zero". 0 added sugar, 0 Preservatives, 0 Colour, 0 caffinene, 0 stablizers, without colorants to make the experience even purer and more genuine. All elements are naturally lactose-free and vegan friendly.
+              </p>
             </div>
+
           </div>
         </section>
 
-        {/* ===== SECTION 1.5: WHAT IS DANG (Normal h-screen, no scroll lock) ===== */}
+        {/* ===== SECTION 1.5: WHAT IS DANG ===== */}
         <section id="section-whatis" className="relative h-screen flex items-center px-6 md:px-16 overflow-hidden">
-           {/* LEFT HEADING: Strict 35% width max */}
            <div className="whatis-item absolute left-6 md:left-16 w-[35%] md:max-w-[300px] z-[20] pointer-events-none">
              <h2 className="font-sans font-black tracking-[0.1em] text-base md:text-3xl text-black uppercase">
                What is Dang?
              </h2>
            </div>
 
-           {/* RIGHT TEXT: Strict 45% width max to avoid bottle */}
            <div className="absolute right-6 md:right-16 w-[45%] md:max-w-[450px] z-[20] pointer-events-none flex flex-col justify-center gap-6 text-right md:text-left">
               <div className="whatis-item">
                  <p className="font-serif italic font-bold text-2xl md:text-4xl text-black leading-relaxed">
