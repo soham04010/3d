@@ -41,7 +41,7 @@ export default function ExpandedOverlay({ isOpen, type, onClose }: ExpandedOverl
       id: "yuzu",
       title: "Refreshing. Genuine. Pure.",
       buttonText: "DISCOVER YUZU",
-      image: "/yuzu.png", // Stand-in image for grid
+      image: "/yuzu_pro.png", // Stand-in image for grid
       color: "bg-[#d8e25d]",
       textColor: "text-black",
       link: "/product/yuzu"
@@ -50,7 +50,7 @@ export default function ExpandedOverlay({ isOpen, type, onClose }: ExpandedOverl
       id: "berry",
       title: "Wild. Real. Fizzy.",
       buttonText: "DISCOVER BERRY",
-      image: "/berry.png", 
+      image: "/berry_pro.png", 
       color: "bg-[#e891af]",
       textColor: "text-white",
       link: "/product/berry"
@@ -62,7 +62,7 @@ export default function ExpandedOverlay({ isOpen, type, onClose }: ExpandedOverl
       id: "tshirt",
       title: "Dang Signature Tee.",
       buttonText: "DISCOVER TEE",
-      image: "/tshirt.png",
+      image: "/tshirt A.png",
       color: "bg-white",
       textColor: "text-black",
       link: "/merch/tshirt"

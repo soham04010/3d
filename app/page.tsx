@@ -110,8 +110,8 @@ const Index = () => {
       <style jsx global>{` 
         @keyframes railway { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-railway { width: 200%; animation: railway 25s linear infinite; display: flex; }
-        .text-outline-yuzu { -webkit-text-stroke: 2px #dce882; color: transparent; }
-        .text-outline-berry { -webkit-text-stroke: 2px #f2a7b8; color: transparent; }
+        .text-outline-yuzu { -webkit-text-stroke: 2px #FFD600; color: transparent; }
+        .text-outline-berry { -webkit-text-stroke: 2px #E84E1B; color: transparent; }
         
         /* ===== HERO ZERO CARDS STYLING ===== */
         .zero-card {
@@ -156,14 +156,14 @@ const Index = () => {
           .zero-card .zero-label {
             font-size: 9px;
           }
-          .text-outline-yuzu { -webkit-text-stroke: 1px #dce882; }
-          .text-outline-berry { -webkit-text-stroke: 1px #f2a7b8; }
+          .text-outline-yuzu { -webkit-text-stroke: 1px #FFD600; }
+          .text-outline-berry { -webkit-text-stroke: 1px #E84E1B; }
         }
       `}</style>
 
       {/* ===== LOADING OVERLAY ===== */}
       <div className="loading-overlay fixed inset-0 z-[9999] bg-[#ffffff] flex flex-col items-center justify-center px-6">
-        <h1 className="font-serif text-3xl md:text-5xl text-black font-medium text-center h-12">
+        <h1 className="font-sans text-3xl md:text-5xl text-black font-medium text-center h-12">
           {typedText}
           <span className="animate-pulse">|</span>
         </h1>
@@ -202,13 +202,13 @@ const Index = () => {
                </h2>
              </div>
              <div className="whatis-item">
-               <p className="font-serif italic font-bold text-xl text-black leading-relaxed">
+               <p className="font-sans font-medium text-xl text-black leading-relaxed">
                  Your first soda memory. Your kid's after-school reach. Your parents' evening ritual.
                </p>
              </div>
              <div className="whatis-item">
                <p className="font-sans font-medium text-sm text-black leading-relaxed">
-                 Some things should work for everyone — at every age, in every moment. That's exactly what we set out to build.
+                 Dang has been crafted with the goal of "the rest is zero". 0 added sugar, 0 Preservatives, 0 Colour, 0 caffinene, 0 stablizers, without colorants to make the experience even purer and more genuine. All elements are naturally lactose-free and vegan friendly.
                </p>
              </div>
              <div className="whatis-item">
@@ -227,7 +227,7 @@ const Index = () => {
 
            <div className="hidden md:flex absolute right-16 w-[45%] max-w-[450px] z-[20] pointer-events-none flex-col justify-center gap-6 text-left">
               <div className="whatis-item">
-                 <p className="font-serif italic font-bold text-4xl text-black leading-relaxed">
+                 <p className="font-sans font-medium text-4xl text-black leading-relaxed">
                    Your first soda memory. Your kid's after-school reach. Your parents' evening ritual.
                  </p>
               </div>
@@ -249,10 +249,10 @@ const Index = () => {
           <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full z-[5] pointer-events-none select-none opacity-40 overflow-hidden">
             <div className="animate-railway">
               <div className="whitespace-nowrap text-[30vw] md:text-[25vw] font-black tracking-tighter text-outline-yuzu px-8">
-                YUZU CITRUS • YUZU CITRUS • 
+                YUZU  • YUZU  • 
               </div>
               <div className="whitespace-nowrap text-[30vw] md:text-[25vw] font-black tracking-tighter text-outline-yuzu px-8">
-                YUZU CITRUS • YUZU CITRUS • 
+                YUZU  • YUZU  • 
               </div>
             </div>
           </div>
@@ -260,8 +260,8 @@ const Index = () => {
           {/* MOBILE: stacked flow layout */}
           <div className="md:hidden flex flex-col gap-5 w-full z-[20] pointer-events-none">
             <div className="yuzu-head">
-              <h2 className="font-sans font-black text-5xl tracking-tighter uppercase text-black drop-shadow-[3px_3px_0px_#dce882]">Yuzu</h2>
-              <p className="font-serif italic text-sm text-gray-500 mt-1">(Bright. Crisp. Authentic)</p>
+              <h2 className="font-sans font-black text-5xl tracking-tighter uppercase text-black drop-shadow-[3px_3px_0px_#FFD600]">Yuzu</h2>
+              <p className="font-sans text-sm text-gray-500 mt-1">(Bright. Crisp. Authentic)</p>
             </div>
             <div className="yuzu-desc">
               <p className="font-sans font-light text-xs text-gray-800 leading-relaxed bg-white/70 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-white">
@@ -269,17 +269,17 @@ const Index = () => {
               </p>
             </div>
             <div className="yuzu-item flex flex-row flex-wrap gap-2">
-               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#f4f7e6] text-[#8ca32e] px-4 py-2 rounded-full shadow-sm border border-[#8ca32e]/20 text-center">Zero Added Sugar</span>
-               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#f4f7e6] text-[#8ca32e] px-4 py-2 rounded-full shadow-sm border border-[#8ca32e]/20 text-center">5g Prebiotic Fiber</span>
-               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#f4f7e6] text-[#8ca32e] px-4 py-2 rounded-full shadow-sm border border-[#8ca32e]/20 text-center">Extra Crispy</span>
-               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#f4f7e6] text-[#8ca32e] px-4 py-2 rounded-full shadow-sm border border-[#8ca32e]/20 text-center">No Preservative</span>
+               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#F4FAF5] text-[#00A343] px-4 py-2 rounded-full shadow-sm border border-[#00A343]/20 text-center">Zero Added Sugar</span>
+               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#F4FAF5] text-[#00A343] px-4 py-2 rounded-full shadow-sm border border-[#00A343]/20 text-center">5g Prebiotic Fiber</span>
+               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#F4FAF5] text-[#00A343] px-4 py-2 rounded-full shadow-sm border border-[#00A343]/20 text-center">Extra Crispy</span>
+               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#F4FAF5] text-[#00A343] px-4 py-2 rounded-full shadow-sm border border-[#00A343]/20 text-center">No Preservative</span>
             </div>
           </div>
 
           {/* DESKTOP: absolute positioned layout */}
           <div className="yuzu-head hidden md:block absolute left-16 top-[25%] w-[40%] max-w-[400px] z-[20] pointer-events-none">
-            <h2 className="font-sans font-black text-8xl tracking-tighter uppercase text-black drop-shadow-[5px_5px_0px_#dce882]">Yuzu</h2>
-            <p className="font-serif italic text-xl text-gray-500 mt-2">(Bright. Crisp. Authentic)</p>
+            <h2 className="font-sans font-black text-8xl tracking-tighter uppercase text-black drop-shadow-[5px_5px_0px_#FFD600]">Yuzu</h2>
+            <p className="font-sans text-xl text-gray-500 mt-2">(Bright. Crisp. Authentic)</p>
           </div>
           
           <div className="yuzu-desc hidden md:flex absolute right-16 bottom-[25%] w-[45%] max-w-[400px] z-[20] pointer-events-none flex-col items-end text-right">
@@ -289,13 +289,13 @@ const Index = () => {
           </div>
 
           <div className="yuzu-item hidden md:flex absolute left-16 bottom-[35%] z-[20] pointer-events-none flex-col gap-4">
-             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#f4f7e6] text-[#8ca32e] px-5 py-3 rounded-full shadow-sm border border-[#8ca32e]/20 text-center">Zero Added Sugar</span>
-             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#f4f7e6] text-[#8ca32e] px-5 py-3 rounded-full shadow-sm border border-[#8ca32e]/20 text-center">5g Prebiotic Fiber</span>
+             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#F4FAF5] text-[#00A343] px-5 py-3 rounded-full shadow-sm border border-[#00A343]/20 text-center">Zero Added Sugar</span>
+             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#F4FAF5] text-[#00A343] px-5 py-3 rounded-full shadow-sm border border-[#00A343]/20 text-center">5g Prebiotic Fiber</span>
           </div>
 
           <div className="yuzu-item hidden md:flex absolute right-16 top-[35%] z-[20] pointer-events-none flex-col items-end gap-4">
-             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#f4f7e6] text-[#8ca32e] px-5 py-3 rounded-full shadow-sm border border-[#8ca32e]/20 text-center">Extra Crispy</span>
-             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#f4f7e6] text-[#8ca32e] px-5 py-3 rounded-full shadow-sm border border-[#8ca32e]/20 text-center">No Preservative</span>
+             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#F4FAF5] text-[#00A343] px-5 py-3 rounded-full shadow-sm border border-[#00A343]/20 text-center">Extra Crispy</span>
+             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#F4FAF5] text-[#00A343] px-5 py-3 rounded-full shadow-sm border border-[#00A343]/20 text-center">No Preservative</span>
           </div>
         </section>
 
@@ -304,10 +304,10 @@ const Index = () => {
           <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full z-[5] pointer-events-none select-none opacity-40 overflow-hidden">
             <div className="animate-railway">
               <div className="whitespace-nowrap text-[30vw] md:text-[25vw] font-black tracking-tighter text-outline-berry px-8">
-                BERRY BLAST • BERRY BLAST • 
+                BERRY  • BERRY  • 
               </div>
               <div className="whitespace-nowrap text-[30vw] md:text-[25vw] font-black tracking-tighter text-outline-berry px-8">
-                BERRY BLAST • BERRY BLAST • 
+                BERRY  • BERRY  • 
               </div>
             </div>
           </div>
@@ -315,8 +315,8 @@ const Index = () => {
           {/* MOBILE: stacked flow layout */}
           <div className="md:hidden flex flex-col gap-5 w-full z-[20] pointer-events-none">
             <div className="berry-head">
-              <h2 className="font-sans font-black text-5xl tracking-tighter uppercase text-black drop-shadow-[3px_3px_0px_#f2a7b8]">Berry</h2>
-              <p className="font-serif italic text-sm text-gray-500 mt-1">(Bold. Real. Fizzy)</p>
+              <h2 className="font-sans font-black text-5xl tracking-tighter uppercase text-black drop-shadow-[3px_3px_0px_#E84E1B]">Berry</h2>
+              <p className="font-sans text-sm text-gray-500 mt-1">(Bold. Real. Fizzy)</p>
             </div>
             <div className="berry-desc">
               <p className="font-sans font-light text-xs text-gray-800 leading-relaxed bg-white/70 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-white">
@@ -324,17 +324,17 @@ const Index = () => {
               </p>
             </div>
             <div className="berry-item flex flex-row flex-wrap gap-2">
-               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#fcf0f5] text-[#d45d79] px-4 py-2 rounded-full shadow-sm border border-[#d45d79]/20 text-center">Zero Added Sugar</span>
-               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#fcf0f5] text-[#d45d79] px-4 py-2 rounded-full shadow-sm border border-[#d45d79]/20 text-center">5g Prebiotic Fiber</span>
-               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#fcf0f5] text-[#d45d79] px-4 py-2 rounded-full shadow-sm border border-[#d45d79]/20 text-center">Extra Crispy</span>
-               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#fcf0f5] text-[#d45d79] px-4 py-2 rounded-full shadow-sm border border-[#d45d79]/20 text-center">No Preservative</span>
+               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#F0EFFF] text-[#1D24C2] px-4 py-2 rounded-full shadow-sm border border-[#1D24C2]/20 text-center">Zero Added Sugar</span>
+               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#F0EFFF] text-[#1D24C2] px-4 py-2 rounded-full shadow-sm border border-[#1D24C2]/20 text-center">5g Prebiotic Fiber</span>
+               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#F0EFFF] text-[#1D24C2] px-4 py-2 rounded-full shadow-sm border border-[#1D24C2]/20 text-center">Extra Crispy</span>
+               <span className="font-sans font-bold text-[9px] tracking-widest uppercase bg-[#F0EFFF] text-[#1D24C2] px-4 py-2 rounded-full shadow-sm border border-[#1D24C2]/20 text-center">No Preservative</span>
             </div>
           </div>
 
           {/* DESKTOP: absolute positioned layout */}
           <div className="berry-head hidden md:block absolute left-16 top-[25%] w-[40%] max-w-[400px] z-[20] pointer-events-none">
-            <h2 className="font-sans font-black text-8xl tracking-tighter uppercase text-black drop-shadow-[5px_5px_0px_#f2a7b8]">Berry</h2>
-            <p className="font-serif italic text-xl text-gray-500 mt-2">(Bold. Real. Fizzy)</p>
+            <h2 className="font-sans font-black text-8xl tracking-tighter uppercase text-black drop-shadow-[5px_5px_0px_#E84E1B]">Berry</h2>
+            <p className="font-sans text-xl text-gray-500 mt-2">(Bold. Real. Fizzy)</p>
           </div>
           
           <div className="berry-desc hidden md:flex absolute right-16 bottom-[25%] w-[45%] max-w-[400px] z-[20] pointer-events-none flex-col items-end text-right">
@@ -344,13 +344,13 @@ const Index = () => {
           </div>
 
           <div className="berry-item hidden md:flex absolute left-16 bottom-[35%] z-[20] pointer-events-none flex-col gap-4">
-             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#fcf0f5] text-[#d45d79] px-5 py-3 rounded-full shadow-sm border border-[#d45d79]/20 text-center">Zero Added Sugar</span>
-             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#fcf0f5] text-[#d45d79] px-5 py-3 rounded-full shadow-sm border border-[#d45d79]/20 text-center">5g Prebiotic Fiber</span>
+             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#F0EFFF] text-[#1D24C2] px-5 py-3 rounded-full shadow-sm border border-[#1D24C2]/20 text-center">Zero Added Sugar</span>
+             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#F0EFFF] text-[#1D24C2] px-5 py-3 rounded-full shadow-sm border border-[#1D24C2]/20 text-center">5g Prebiotic Fiber</span>
           </div>
 
           <div className="berry-item hidden md:flex absolute right-16 top-[35%] z-[20] pointer-events-none flex-col items-end gap-4">
-             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#fcf0f5] text-[#d45d79] px-5 py-3 rounded-full shadow-sm border border-[#d45d79]/20 text-center">Extra Crispy</span>
-             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#fcf0f5] text-[#d45d79] px-5 py-3 rounded-full shadow-sm border border-[#d45d79]/20 text-center">No Preservative</span>
+             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#F0EFFF] text-[#1D24C2] px-5 py-3 rounded-full shadow-sm border border-[#1D24C2]/20 text-center">Extra Crispy</span>
+             <span className="font-sans font-bold text-sm tracking-widest uppercase bg-[#F0EFFF] text-[#1D24C2] px-5 py-3 rounded-full shadow-sm border border-[#1D24C2]/20 text-center">No Preservative</span>
           </div>
         </section>
 
@@ -358,7 +358,7 @@ const Index = () => {
         <section id="section-cta" className="relative min-h-[80vh] md:h-screen flex flex-col items-center justify-end pb-12 md:pb-16 overflow-hidden">
           <div className="cta-content text-center z-[20] relative cursor-auto max-w-2xl px-6">
             <h3 className="font-sans font-bold text-[10px] md:text-xs tracking-widest text-gray-400 uppercase mb-3 md:mb-4">[ WHY DANG ]</h3>
-            <p className="font-serif italic text-xl md:text-4xl text-black mb-8 md:mb-10 leading-tight">
+            <p className="font-sans text-xl md:text-4xl text-black mb-8 md:mb-10 leading-tight">
               A pharmacist knew what the body needs. A chef knew what it wants.
             </p>
             <button 
@@ -381,7 +381,7 @@ const Index = () => {
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <h2 className="text-xl md:text-2xl font-sans font-black mb-2 text-black">Drop a line.</h2>
-            <p className="text-gray-400 text-xs md:text-sm mb-4 md:mb-6 font-serif italic">For the person who makes the smart choice.</p>
+            <p className="text-gray-400 text-xs md:text-sm mb-4 md:mb-6 font-sans">For the person who makes the smart choice.</p>
             
             <form className="flex flex-col gap-2.5 md:gap-3" onSubmit={handleSubmit}>
               <input type="text" name="name" required placeholder="Name" className="p-3 md:p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors" />

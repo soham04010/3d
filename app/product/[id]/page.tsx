@@ -28,11 +28,11 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const product = productData[flavorId] || productData.yuzu; 
 
   return (
-    <div className="relative w-full min-h-screen md:h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden bg-[#e0e3e1]">
+    <div className="relative w-full min-h-screen md:h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden bg-[#F8F9FA]">
       
       {/* BACKGROUND IMAGE / BLUR */}
       <div className="absolute inset-0 z-0">
-         <div className="absolute inset-0 bg-[#e0e3e1]/40 backdrop-blur-3xl z-10"></div>
+         <div className="absolute inset-0 bg-[#F8F9FA]/40 backdrop-blur-3xl z-10"></div>
          <Image src="/hero.jpg" alt="Background" fill className="object-cover opacity-30" />
       </div>
 
@@ -73,7 +73,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                </div>
              </div>
 
-             <p className="font-serif italic text-xs md:text-sm text-black/80 mb-5 md:mb-6 leading-relaxed">
+             <p className="font-sans text-xs md:text-sm text-black/80 mb-5 md:mb-6 leading-relaxed">
                {product.description}
              </p>
 

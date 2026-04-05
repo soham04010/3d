@@ -70,8 +70,8 @@ export default function CustomCursor() {
       ref={cursorRef}
       className="fixed top-0 left-0 pointer-events-none z-[9999]"
       style={{
-        width: '310px',
-        height: '440px',
+        width: '100px',
+        height: '100px',
         transform: 'translate(-50%, -50%)',
         willChange: 'transform',
       }}

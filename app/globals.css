@@ -35,13 +35,13 @@ body {
   /* Helvetica Neue as primary font sitewide */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   /* Hide native cursor on desktop — custom cursor rendered via JS */
-  cursor: none;
+  cursor: none !important;
 }
 
 /* Force Helvetica Neue on ALL elements + hide native cursor */
 *, *::before, *::after {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  cursor: none;
+  cursor: none !important;
 }
 
 /* ===== MOBILE / TOUCH DEVICE ADJUSTMENTS ===== */
