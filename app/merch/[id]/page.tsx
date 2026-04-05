@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import ImageCarousel from "../../../components/ImageCarousel";
 
 // Static merch data (Active Hop style)
 const merchData: Record<string, any> = {
@@ -7,21 +8,23 @@ const merchData: Record<string, any> = {
     name: "DANG TOTE BAG",
     description: "Carry your everyday essentials in our heavy canvas tote. Minimal branding, maximum utility. Perfect for a quick grocery run or a day out in the city.",
     price: "₹2470.00",
-    image: "/Tote Bag.png",
+    image: "/Tote Bag1.png",
+    images: ["/Tote Bag1.png", "/Tote Bag A.png"],
     details: "100% Cotton Canvas • Heavyweight"
   },
   "tshirt": {
     name: "DANG SIGNATURE TEE",
     description: "The classic fit. Our signature t-shirt features a relaxed silhouette and ultra-soft combed cotton. Subtle back print detailing.",
     price: "₹1,996.00",
-    image: "/tshirt.png",
+    image: "/blue Tshirt.png",
+    images: ["/blue Tshirt.png", "/tshirt B.png", "/tshirt1.png"],
     details: "100% French Terry Cotton • Relaxed Fit"
   },
   "cap": {
     name: "DANG DAD CAP",
     description: "An unstructured, low-profile dad cap for those sunny runs or bad hair days. Adjustable strap and subtle embroidered logo.",
     price: "₹1010.00",
-    image: "/cap Dang .png",
+    image: "/cap Dang 1.png",
     details: "100% Cotton Twill • Adjustable Strap"
   }
 };
@@ -32,7 +35,7 @@ export default async function MerchPage({ params }: { params: Promise<{ id: stri
   const product = merchData[merchId] || merchData["tshirt"]; 
 
   return (
-    <div className="relative w-full min-h-screen md:h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden bg-[#e0e3e1]">
+    <div className="relative w-full min-h-screen md:h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden bg-[#F8F9FA]">
       
       {/* BACKGROUND IMAGE / BLUR */}
       <div className="absolute inset-0 z-0">
@@ -43,14 +46,18 @@ export default async function MerchPage({ params }: { params: Promise<{ id: stri
       {/* MERCH IMAGE (Pseudo-3D Float) */}
       <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
         <div style={{ animation: "float 6s ease-in-out infinite" }} className="relative drop-shadow-2xl">
-           <Image 
-             src={product.image} 
-             alt={product.name} 
-             width={600} 
-             height={600} 
-             className="w-auto max-h-[40vh] md:max-h-[70vh] max-w-[70vw] md:max-w-[80vw] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]"
-             priority
-           />
+           {product.images ? (
+             <ImageCarousel images={product.images} alt={product.name} />
+           ) : (
+             <Image 
+               src={product.image} 
+               alt={product.name} 
+               width={600} 
+               height={600} 
+               className="w-auto max-h-[40vh] md:max-h-[70vh] max-w-[70vw] md:max-w-[80vw] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] pointer-events-auto"
+               priority
+             />
+           )}
         </div>
       </div>
 
@@ -98,7 +105,7 @@ export default async function MerchPage({ params }: { params: Promise<{ id: stri
                {product.details}
              </p>
 
-             <p className="font-serif italic text-xs md:text-sm text-black/80 mb-5 md:mb-6 leading-relaxed">
+             <p className="font-sans text-xs md:text-sm text-black/80 mb-5 md:mb-6 leading-relaxed">
                {product.description}
              </p>
 
