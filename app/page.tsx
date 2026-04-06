@@ -154,7 +154,9 @@ const Index = () => {
         <section id="section-whatis" className="relative flex flex-col items-center justify-end px-6 md:px-16 overflow-hidden pb-12 md:pb-16" style={{ height: 'calc(100vh + 300px)' }}>
           <div id="about-anchor" className="whatis-item max-w-[700px] w-full text-center z-[5] pointer-events-none relative mt-auto">
             <p className="font-sans font-bold text-[11px] md:text-[13px] text-black leading-relaxed md:leading-[1.8]">
-              Dang has been crafted with the goal of "the rest is zero". 0 added sugar, 0 Preservatives, 0 Colour, 0 caffinene, 0 stablizers, without colorants to make the experience even purer and more genuine. All elements are naturally lactose-free and vegan friendly.
+              Dang is crafted with one simple philosophy — "the rest is zero."
+0 added sugar. 0 preservatives. 0 artificial colours. 0 caffeine. 0 stabilizers. 0 colorants.
+Every element is thoughtfully chosen to deliver a purer, more genuine experience. Naturally lactose-free and 100% vegan-friendly, Dang is clean living in every sip.
             </p>
           </div>
         </section>
@@ -166,10 +168,10 @@ const Index = () => {
           <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full z-[5] pointer-events-none select-none opacity-30 overflow-hidden">
             <div className="animate-railway">
               <div className="whitespace-nowrap text-[30vw] md:text-[25vw] font-black tracking-tighter text-fill-yuzu px-8">
-                YUZU&nbsp;&nbsp;•&nbsp;&nbsp;YUZU&nbsp;&nbsp;•&nbsp;&nbsp;
+                YU ZU&nbsp;&nbsp;•&nbsp;&nbsp;YU ZU&nbsp;&nbsp;•&nbsp;&nbsp;
               </div>
               <div className="whitespace-nowrap text-[30vw] md:text-[25vw] font-black tracking-tighter text-fill-yuzu px-8">
-                YUZU&nbsp;&nbsp;•&nbsp;&nbsp;YUZU&nbsp;&nbsp;•&nbsp;&nbsp;
+                YU ZU&nbsp;&nbsp;•&nbsp;&nbsp;YU ZU&nbsp;&nbsp;•&nbsp;&nbsp;
               </div>
             </div>
           </div>
@@ -177,12 +179,12 @@ const Index = () => {
           {/* ✅ MOBILE: desc and tags pushed to BOTTOM — free space below the 3D can */}
           <div className="md:hidden flex flex-col w-full z-[20] pointer-events-none" style={{ minHeight: '100vh', justifyContent: 'flex-end', paddingBottom: '40px' }}>
             <div className="yuzu-head mb-3">
-              <h2 className="font-sans font-black text-5xl tracking-tighter uppercase text-[#FFD600]">Yuzu</h2>
+              <h2 className="font-sans font-black text-5xl tracking-tighter uppercase text-[#FFD600]">Yu zu</h2>
               <p className="font-sans font-light text-sm text-gray-500 mt-1">(Bright. Crisp. Authentic)</p>
             </div>
             <div className="yuzu-desc mb-4">
               <p className="font-sans font-light text-xs text-gray-800 leading-relaxed bg-white/80 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-white">
-                The kind of citrus that doesn't apologise for itself. Yuzu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.
+                The kind of citrus that doesn't apologise for itself. Yu zu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.
               </p>
             </div>
             <div className="yuzu-item flex flex-row flex-wrap gap-2">
@@ -195,13 +197,13 @@ const Index = () => {
 
           {/* DESKTOP layout — unchanged */}
           <div className="yuzu-head hidden md:block absolute left-16 top-[25%] w-[40%] max-w-[400px] z-[20] pointer-events-none">
-            <h2 className="font-sans font-black text-8xl tracking-tighter uppercase text-[#FFD600]">Yuzu</h2>
+            <h2 className="font-sans font-black text-8xl tracking-tighter uppercase text-[#FFD600]">Yu zu</h2>
             <p className="font-sans font-light text-xl text-gray-500 mt-2">(Bright. Crisp. Authentic)</p>
           </div>
 
           <div className="yuzu-desc hidden md:flex absolute right-16 bottom-[25%] w-[45%] max-w-[400px] z-[20] pointer-events-none flex-col items-end text-right">
             <p className="font-sans font-light text-base text-gray-800 leading-relaxed bg-white/70 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-white">
-              The kind of citrus that doesn't apologise for itself. Yuzu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.
+              The kind of citrus that doesn't apologise for itself. Yu zu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.
             </p>
           </div>
 
