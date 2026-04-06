@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useLayoutEffect, useMemo } from 'react';
 import { useGLTF, useTexture } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,6 +13,10 @@ export default function Bottle({ flavor, ...props }) {
   const group = useRef(); 
   const mouseGroup = useRef(); 
   const innerGroup = useRef(); 
+
+  const { size } = useThree();
+  const isMobile = size.width < 768;
+  const canScale = isMobile ? 13.5 : 15;
 
   // We use an array to store ALL body materials so the glitch swap never fails
   const bodyMaterialRef = useRef([]);
@@ -216,7 +220,7 @@ if (!flavor) {
             <spotLight position={[-5, 5, -5]} angle={0.5} penumbra={0.5} intensity={15} color="#ffffff" />
             <directionalLight position={[2, 0, 5]} intensity={1.5} color="#ffffff" />
 
-            <group scale={15} position={[0, -1.0, 0]}>
+            <group scale={canScale} position={[0, -1.0, 0]}>
               <primitive object={canModel} />
             </group>
             
