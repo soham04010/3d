@@ -28,6 +28,30 @@ export default function ExpandedOverlay({ isOpen, type, onClose, onSwitchType }:
   }, [isOpen]);
 
   useEffect(() => {
+    const handlePopState = () => {
+      if (isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.history.pushState({ overlayOpen: true }, "");
+      window.addEventListener("popstate", handlePopState);
+    }
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isOpen, onClose]);
+
+  const handleManualClose = () => {
+    if (typeof window !== "undefined" && window.history.state?.overlayOpen) {
+      window.history.back();
+    }
+    onClose();
+  };
+
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
       gsap.fromTo(
@@ -105,7 +129,7 @@ export default function ExpandedOverlay({ isOpen, type, onClose, onSwitchType }:
     <div
       className="fixed inset-0 z-[250] flex flex-col items-center justify-center p-3 md:p-6"
       style={{ fontFamily: BRAND.font }}
-      onClick={onClose}
+      onClick={handleManualClose}
     >
       {/* Blurred backdrop */}
       <div className="absolute inset-0 bg-black/10 backdrop-blur-[35px] transition-opacity duration-500" />
@@ -137,26 +161,18 @@ export default function ExpandedOverlay({ isOpen, type, onClose, onSwitchType }:
               </span>
             )}
 
-            {/* ✅ About Us — closes overlay and scrolls to section */}
-            <span
+            {/* ✅ Contact Us — closes overlay and routes to contact */}
+            <Link
+              href="/contact"
               className="cursor-pointer hover:opacity-60 transition-opacity"
-              onClick={() => {
-                onClose();
-                setTimeout(() => {
-                  const anchor = document.getElementById("about-anchor");
-                  if (anchor) {
-                    const y = anchor.getBoundingClientRect().top + window.scrollY - 100;
-                    window.scrollTo({ top: y, behavior: "smooth" });
-                  }
-                }, 350); // wait for overlay close animation
-              }}
+              onClick={onClose}
             >
-              ABOUT US
-            </span>
+              CONTACT US
+            </Link>
           </div>
 
           {/* Logo — goes home */}
-          <Link href="/" className="md:absolute md:left-1/2 md:-translate-x-1/2 cursor-pointer" onClick={onClose}>
+          <Link href="/" className="md:absolute md:left-1/2 md:-translate-x-1/2 cursor-pointer" onClick={handleManualClose}>
             <Image
               src="/logo.png"
               alt="Dang Soda"
@@ -170,7 +186,7 @@ export default function ExpandedOverlay({ isOpen, type, onClose, onSwitchType }:
           <div
             className="text-[10px] md:text-xs uppercase tracking-widest text-black/80 cursor-pointer pointer-events-auto relative z-50 hover:opacity-60 transition-opacity px-2 py-1 rounded"
             style={{ fontWeight: 700 }}
-            onClick={onClose}
+            onClick={handleManualClose}
           >
             CLOSE ✕
           </div>
