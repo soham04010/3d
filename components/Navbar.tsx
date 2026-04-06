@@ -18,32 +18,37 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const handlePopState = () => {
+      setTimeout(() => {
+        if (window.location.pathname === "/") {
+          window.location.reload();
+        }
+      }, 10);
+    };
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("popstate", handlePopState);
+    };
   }, []);
-
-
 
   useEffect(() => {
     if (pathname === "/") {
-      // 1. Set Navbar to start exactly in the middle of the screen
       gsap.set(navRef.current, { top: "50vh", yPercent: -50 });
-      
-      // 2. Smooth fade in when site loads
       gsap.from(navRef.current, { opacity: 0, duration: 1.2, delay: 3.6, ease: "power3.out" });
-
-      // 3. Glide to the top as the user starts scrolling
       gsap.to(navRef.current, {
-        top: "18px",       // Docks at the top edge
-        yPercent: 0,       // Resets the center transform
+        top: "18px",
+        yPercent: 0,
         scrollTrigger: {
           trigger: document.body,
           start: "top top",
-          end: "300px top", // Finishes gliding up after 300px of scroll
+          end: "300px top",
           scrub: 1,
         }
       });
     } else {
-      // On other pages (Product, Merch), just dock it to the top immediately.
       gsap.set(navRef.current, { top: "18px", yPercent: 0, opacity: 1 });
     }
 
@@ -52,34 +57,37 @@ export default function Navbar() {
     };
   }, [pathname]);
 
+  // ✅ Pure native scroll — no plugin needed, always works
+const handleAboutUsClick = (e: React.MouseEvent) => {
+  e.preventDefault();
+  // Target the text itself, not the top of the tall section
+  const anchor = document.getElementById("about-anchor");
+  if (anchor) {
+    const y = anchor.getBoundingClientRect().top + window.scrollY - 100; // -100 for navbar headroom
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
+};
+
   return (
     <>
     <nav ref={navRef} className="navbar-root">
       <div className={`navbar-pill ${scrolled ? "navbar-pill--scrolled" : ""}`}>
+        <a href="#section-whatis" onClick={handleAboutUsClick} className="navbar-link">About Us</a>
+        <button onClick={() => setOverlayType("product")} className="navbar-link bg-transparent border-none p-0 outline-none">Products</button>
 
-        {/* LEFT LINKS */}
-        <div className="navbar-links">
-          <a href="/#section-whatis" className="navbar-link">About</a>
-          <button onClick={() => setOverlayType("product")} className="navbar-link bg-transparent border-none p-0 outline-none">Product</button>
-        </div>
-
-        {/* CENTER LOGO */}
         <Link href="/" className="navbar-logo">
           <Image
             src="/logo.png"
             alt="Dang Soda"
-            width={160} 
-            height={60} 
+            width={160}
+            height={60}
             style={{ objectFit: "contain", maxHeight: "40px" }}
             priority
           />
         </Link>
 
-        {/* RIGHT LINKS */}
-        <div className="navbar-links">
-          <button onClick={() => setOverlayType("merch")} className="navbar-link bg-transparent border-none p-0 outline-none">Merch</button>
-          <a href="/#section-cta" className="navbar-link">Contact&nbsp;Us</a>
-        </div>
+        <button onClick={() => setOverlayType("merch")} className="navbar-link bg-transparent border-none p-0 outline-none">Merch</button>
+        <a href="/contact" className="navbar-link">Contact Us</a>
       </div>
 
       <style jsx>{`
@@ -88,22 +96,18 @@ export default function Navbar() {
           display: flex; flex-direction: column; align-items: center; pointer-events: none;
           font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
-        
-        /* The floating pill */
         .navbar-pill {
           display: flex; align-items: center; justify-content: center;
-          gap: 48px; /* Reduced spacing between logo and links */
-          width: max-content; 
+          gap: 40px;
+          width: max-content;
           max-width: 95vw;
-          background: #ffffff; /* Solid white background */
+          background: #ffffff;
           border-radius: 999px;
-          padding: 10px 40px; border: 1px solid rgba(0, 0, 0, 0.08); /* Keeps pill outline subtle */
+          padding: 10px 48px; border: 1px solid rgba(0, 0, 0, 0.08);
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06); pointer-events: all;
           transition: box-shadow 0.3s ease, background 0.3s ease;
         }
-        
         .navbar-pill--scrolled { background: #ffffff; box-shadow: 0 8px 40px rgba(0, 0, 0, 0.10); }
-        .navbar-links { display: flex; align-items: center; gap: 32px; }
         .navbar-link {
           font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
           color: #111111; text-decoration: none; cursor: pointer; position: relative;
@@ -113,10 +117,9 @@ export default function Navbar() {
           content: ''; position: absolute; bottom: -2px; left: 0; width: 0%; height: 1px;
           background: #111111; transition: width 0.25s ease;
         }
-        .navbar-link:hover { color: #000; }
-        .navbar-link:hover::after { width: 100%; }
+        .navbar-link:hover, .navbar-link.cursor-colliding { color: #000; }
+        .navbar-link:hover::after, .navbar-link.cursor-colliding::after { width: 100%; }
         .navbar-logo { display: flex; align-items: center; justify-content: center; }
-        
         @media (max-width: 640px) {
           .navbar-pill { padding: 8px 24px; gap: 20px; }
           .navbar-links { gap: 16px; }
@@ -124,7 +127,12 @@ export default function Navbar() {
         }
       `}</style>
     </nav>
-    <ExpandedOverlay isOpen={overlayType !== null} type={overlayType} onClose={() => setOverlayType(null)} />
+    <ExpandedOverlay
+      isOpen={overlayType !== null}
+      type={overlayType}
+      onClose={() => setOverlayType(null)}
+      onSwitchType={(t) => setOverlayType(t)}
+    />
     </>
   );
 }
