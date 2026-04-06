@@ -52,17 +52,12 @@ export default function ContactPage() {
         <h2 className="text-xl md:text-2xl font-sans font-black mb-2 text-black">Drop a line.</h2>
         <p className="text-gray-400 text-xs md:text-sm mb-4 md:mb-6 font-sans">For the person who makes the smart choice.</p>
         
-        <form className="flex flex-col gap-2.5 md:gap-3" onSubmit={handleSubmit}>
-          <input type="text" name="name" required placeholder="Name" className="p-3 md:p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors" />
-          <input type="email" name="email" required placeholder="Company Email" className="p-3 md:p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors" />
-          <input type="tel" name="phone" required placeholder="Phone Number" className="p-3 md:p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors" />
-          <textarea name="message" required placeholder="Message" rows={3} className="p-3 md:p-4 bg-gray-50 border border-gray-100 rounded-lg font-sans text-xs outline-none focus:border-black transition-colors resize-none" />
-          <input type="hidden" name="subject" value="New Website Submission for Dang Soda" />
-          <button type="submit" className="bg-black text-white font-sans font-medium text-xs tracking-widest uppercase py-3 md:py-4 rounded-lg mt-1 md:mt-2 hover:bg-gray-800 [&.cursor-colliding]:bg-gray-800 transition-colors">
-            Send Message
-          </button>
-          {submitStatus && <div className={`mt-1 md:mt-2 font-sans font-medium text-center text-xs ${isError ? 'text-red-500' : 'text-green-600'}`}>{submitStatus}</div>}
-        </form>
+   <iframe
+  src="https://drinkdang.com/contact/"
+  width="100%"
+  height="600px"
+  style={{ border: "none" }}
+></iframe>
 
         <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-gray-100 flex flex-col gap-1.5 md:gap-2">
           <h3 className="font-sans font-bold text-[9px] md:text-[10px] tracking-widest text-gray-400 uppercase">Our Contacts</h3>
