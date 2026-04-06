@@ -124,13 +124,15 @@ export default function Bottle({ flavor, ...props }) {
       gsap.set(group.current.position, { y: 0 }); 
 
       // WHAT IS DANG
-      const tlWhatIs = gsap.timeline({ scrollTrigger: { trigger: "#section-whatis", start: "top bottom", end: "center center", scrub: 1 } });
+      const tlWhatIs = gsap.timeline({ scrollTrigger: { trigger: "#section-whatis", start: "100px top", end: "450px top", scrub: 1 } });
       tlWhatIs.to(group.current.rotation, { y: 0, ease: "none" }, 0)
+              .to(group.current.position, { y: 0.2, ease: "power1.inOut" }, 0)
               .to("#bg-layer", { backgroundColor: "#fafafa", ease: "none" }, 0); 
 
       // YUZU ROTATION
       const tlDetails = gsap.timeline({ scrollTrigger: { trigger: "#section-details", start: "top bottom", end: "center center", scrub: 1 } });
       tlDetails.to(group.current.rotation, { y: Math.PI * 2, ease: "power1.inOut" }, 0)
+               .to(group.current.position, { y: 0, ease: "power1.inOut" }, 0)
                .to("#bg-layer", { backgroundColor: "#f9fcf5", ease: "power1.inOut" }, 0);
 
       // BERRY ROTATION
@@ -139,38 +141,52 @@ export default function Bottle({ flavor, ...props }) {
                    .to("#bg-layer", { backgroundColor: "#fcf5f7", ease: "power1.inOut" }, 0);
 
       // INSTANT GLITCH TEXTURE SWAP (Only on main landing page)
-      if (!flavor) {
-        ScrollTrigger.create({
-          trigger: "#section-ingredients",
-          start: "top 60%", 
-          onEnter: () => {
-            const setTex = (tex) => {
-              bodyMaterialRef.current.forEach(mat => {
-                mat.map = tex;
-                mat.needsUpdate = true;
-              });
-            };
-            
-            setTimeout(() => setTex(berryTexture), 0);
-            setTimeout(() => setTex(yuzuTexture), 50);
-            setTimeout(() => setTex(berryTexture), 100);
-            setTimeout(() => setTex(yuzuTexture), 150);
-            setTimeout(() => setTex(berryTexture), 200); // Settles on Berry
-          },
-          onLeaveBack: () => {
-            const setTex = (tex) => {
-              bodyMaterialRef.current.forEach(mat => {
-                mat.map = tex;
-                mat.needsUpdate = true;
-              });
-            };
-            
-            setTimeout(() => setTex(yuzuTexture), 0);
-            setTimeout(() => setTex(berryTexture), 50);
-            setTimeout(() => setTex(yuzuTexture), 100); // Settles back on Yuzu
-          }
+// In useLayoutEffect, replace the ScrollTrigger.create block with:
+if (!flavor) {
+  // ✅ Immediately force yuzu FIRST before anything else runs
+  const resetToYuzu = () => {
+    bodyMaterialRef.current.forEach(mat => {
+      mat.map = yuzuTexture;
+      mat.needsUpdate = true;
+    });
+  };
+  resetToYuzu();
+
+  // ✅ Also reset after a tick (catches any async material updates)
+  setTimeout(resetToYuzu, 0);
+  setTimeout(resetToYuzu, 100);
+
+  ScrollTrigger.create({
+    trigger: "#section-ingredients",
+    start: "top 60%",
+    immediateRender: false,
+    refreshPriority: -1, // ✅ Ensures this runs AFTER scroll position is reset
+    onEnter: () => {
+      const setTex = (tex) => {
+        bodyMaterialRef.current.forEach(mat => {
+          mat.map = tex;
+          mat.needsUpdate = true;
         });
-      }
+      };
+      setTimeout(() => setTex(berryTexture), 0);
+      setTimeout(() => setTex(yuzuTexture), 50);
+      setTimeout(() => setTex(berryTexture), 100);
+      setTimeout(() => setTex(yuzuTexture), 150);
+      setTimeout(() => setTex(berryTexture), 200);
+    },
+    onLeaveBack: () => {
+      const setTex = (tex) => {
+        bodyMaterialRef.current.forEach(mat => {
+          mat.map = tex;
+          mat.needsUpdate = true;
+        });
+      };
+      setTimeout(() => setTex(yuzuTexture), 0);
+      setTimeout(() => setTex(berryTexture), 50);
+      setTimeout(() => setTex(yuzuTexture), 100);
+    }
+  });
+}
 
       // CTA
       const tlCta = gsap.timeline({ scrollTrigger: { trigger: "#section-cta", start: "top bottom", end: "center center", scrub: 1 } });
@@ -200,7 +216,7 @@ export default function Bottle({ flavor, ...props }) {
             <spotLight position={[-5, 5, -5]} angle={0.5} penumbra={0.5} intensity={15} color="#ffffff" />
             <directionalLight position={[2, 0, 5]} intensity={1.5} color="#ffffff" />
 
-            <group scale={15} position={[0, -1.2, 0]}>
+            <group scale={15} position={[0, -1.0, 0]}>
               <primitive object={canModel} />
             </group>
             

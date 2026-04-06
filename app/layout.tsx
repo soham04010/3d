@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
-  title: "DANG SODA | Gen Z Desi Pop",
+  title: "DANG SODA",
   description: "A Gen-Z desi pop beverage",
 };
 
