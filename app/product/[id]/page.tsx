@@ -8,7 +8,7 @@ const productData: Record<string, any> = {
     name: "YUZU CITRUS",
     tagline: "Bright. Crisp. Authentic.",
     description: "The kind of citrus that doesn't apologise for itself. Yuzu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.",
-    price: "₹120.00",
+    price: "₹360.00",
     packSize: "6 x 250ml",
     nutritionLink: "#"
   },
@@ -16,7 +16,7 @@ const productData: Record<string, any> = {
     name: "BERRY BLAST",
     tagline: "Wild. Real. Fizzy.",
     description: "A burst of wild berries combined with the crispness of our signature soda. It's the bold, fruity hit you've been waiting for.",
-    price: "₹120.00",
+    price: "₹360.00",
     packSize: "6 x 250ml",
     nutritionLink: "#"
   }
