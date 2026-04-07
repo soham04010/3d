@@ -168,10 +168,10 @@ Every element is thoughtfully chosen to deliver a purer, more genuine experience
           <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full z-[5] pointer-events-none select-none opacity-30 overflow-hidden">
             <div className="animate-railway">
               <div className="whitespace-nowrap text-[30vw] md:text-[25vw] font-black tracking-tighter text-fill-yuzu px-8">
-                YU ZU&nbsp;&nbsp;•&nbsp;&nbsp;YU ZU&nbsp;&nbsp;•&nbsp;&nbsp;
+                YUZU&nbsp;&nbsp;•&nbsp;&nbsp;YUZU&nbsp;&nbsp;•&nbsp;&nbsp;
               </div>
               <div className="whitespace-nowrap text-[30vw] md:text-[25vw] font-black tracking-tighter text-fill-yuzu px-8">
-                YU ZU&nbsp;&nbsp;•&nbsp;&nbsp;YU ZU&nbsp;&nbsp;•&nbsp;&nbsp;
+                YUZU&nbsp;&nbsp;•&nbsp;&nbsp;YUZU&nbsp;&nbsp;•&nbsp;&nbsp;
               </div>
             </div>
           </div>
@@ -179,12 +179,12 @@ Every element is thoughtfully chosen to deliver a purer, more genuine experience
           {/* ✅ MOBILE: desc and tags pushed to BOTTOM — free space below the 3D can */}
           <div className="md:hidden flex flex-col w-full z-[20] pointer-events-none" style={{ minHeight: '100vh', justifyContent: 'flex-end', paddingBottom: '40px' }}>
             <div className="yuzu-head mb-3">
-              <h2 className="font-sans font-black text-5xl tracking-tighter uppercase text-[#FFD600]">Yu zu</h2>
+              <h2 className="font-sans font-black text-5xl tracking-tighter uppercase text-[#FFD600]">Yuzu</h2>
               <p className="font-sans font-light text-sm text-gray-500 mt-1">(Bright. Crisp. Authentic)</p>
             </div>
             <div className="yuzu-desc mb-4">
               <p className="font-sans font-light text-xs text-gray-800 leading-relaxed bg-white/80 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-white">
-                The kind of citrus that doesn't apologise for itself. Yu zu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.
+                The kind of citrus that doesn't apologise for itself. Yuzu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.
               </p>
             </div>
             <div className="yuzu-item flex flex-row flex-wrap gap-2">
@@ -197,13 +197,13 @@ Every element is thoughtfully chosen to deliver a purer, more genuine experience
 
           {/* DESKTOP layout — unchanged */}
           <div className="yuzu-head hidden md:block absolute left-16 top-[25%] w-[40%] max-w-[400px] z-[20] pointer-events-none">
-            <h2 className="font-sans font-black text-8xl tracking-tighter uppercase text-[#FFD600]">Yu zu</h2>
+            <h2 className="font-sans font-black text-8xl tracking-tighter uppercase text-[#FFD600]">Yuzu</h2>
             <p className="font-sans font-light text-xl text-gray-500 mt-2">(Bright. Crisp. Authentic)</p>
           </div>
 
           <div className="yuzu-desc hidden md:flex absolute right-16 bottom-[25%] w-[45%] max-w-[400px] z-[20] pointer-events-none flex-col items-end text-right">
             <p className="font-sans font-light text-base text-gray-800 leading-relaxed bg-white/70 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-white">
-              The kind of citrus that doesn't apologise for itself. Yu zu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.
+              The kind of citrus that doesn't apologise for itself. Yuzu — native, sharp, clean. A soda you reach for at 6pm and don't think twice about.
             </p>
           </div>
 
