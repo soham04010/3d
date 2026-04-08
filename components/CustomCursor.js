@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
 export default function CustomCursor() {
   const cursorRef = useRef(null);
+  const pathname = usePathname();
   const [isHovering, setIsHovering] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -125,8 +127,8 @@ export default function CustomCursor() {
     };
   }, []);
 
-  // Don't render the cursor on touch devices
-  if (isTouchDevice) return null;
+  // Don't render the cursor on touch devices or on contact form
+  if (isTouchDevice || pathname === '/contact') return null;
 
   return (
     <div

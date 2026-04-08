@@ -150,16 +150,26 @@ const Index = () => {
 
       <div ref={mainRef} className="relative text-black">
 
-        {/* SECTION 1: HERO */}
-        <section id="section-whatis" className="relative flex flex-col items-center justify-end px-6 md:px-16 overflow-hidden pb-12 md:pb-16" style={{ height: 'calc(100vh + 300px)' }}>
-          <div id="about-anchor" className="whatis-item max-w-[700px] w-full text-center z-[5] pointer-events-none relative mt-auto">
-            <p className="font-sans font-bold text-[11px] md:text-[13px] text-black leading-relaxed md:leading-[1.8]">
-              Dang is crafted with one simple philosophy — "the rest is zero."
-0 added sugar. 0 preservatives. 0 artificial colours. 0 caffeine. 0 stabilizers. 0 colorants.
-Every element is thoughtfully chosen to deliver a purer, more genuine experience. Naturally lactose-free and 100% vegan-friendly, Dang is clean living in every sip.
-            </p>
-          </div>
-        </section>
+{/* SECTION 1: HERO */}
+<section id="section-whatis" className="relative flex flex-col items-center justify-end px-6 md:px-16 overflow-hidden pb-12 md:pb-16" style={{ height: 'calc(100vh + 300px)' }}>
+  <div id="about-anchor" className="whatis-item max-w-[850px] w-full text-center z-[5] pointer-events-none relative mt-auto">
+    <p className="font-sans font-bold text-[11px] md:text-[14px] text-black leading-relaxed md:leading-[1.8]">
+      {/* Line 1 */}
+      <span>Dang is crafted with one simple philosophy  —  "the rest is zero."</span>
+      <br />
+      {/* Line 3 */}
+      <span className="uppercase tracking-widest text-[10px] md:text-[12px]">
+        0 added sugar. 0 preservatives. 0 artificial colours. 0 caffeine. 0 stabilizers. 0 colorants.
+      </span>
+      <br />
+      {/* Line 4 onwards */}
+      <span className="font-medium opacity-90 block mt-2">
+        Every element is thoughtfully chosen to deliver a purer, more genuine experience. 
+        Naturally lactose-free and 100% vegan-friendly, Dang is clean living in every sip.
+      </span>
+    </p>
+  </div>
+</section>
 
         {/* SECTION 2: YUZU */}
         <section id="section-details" className="relative min-h-screen md:h-screen flex items-center px-4 md:px-16 overflow-hidden py-20 md:py-0">

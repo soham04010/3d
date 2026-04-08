@@ -34,6 +34,9 @@ body {
   overflow-x: hidden;
   /* Helvetica Neue as primary font sitewide */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+body:not(.auto-cursor) {
   /* Hide native cursor on desktop — custom cursor rendered via JS */
   cursor: none !important;
 }
@@ -41,6 +44,9 @@ body {
 /* Force Helvetica Neue on ALL elements + hide native cursor */
 *, *::before, *::after {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+body:not(.auto-cursor) *, body:not(.auto-cursor) *::before, body:not(.auto-cursor) *::after {
   cursor: none !important;
 }
 
