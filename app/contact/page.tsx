@@ -1,10 +1,15 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function ContactPage() {
   const [submitStatus, setSubmitStatus] = useState(""); 
   const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.add('auto-cursor');
+    return () => document.body.classList.remove('auto-cursor');
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

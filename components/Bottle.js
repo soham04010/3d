@@ -130,7 +130,7 @@ export default function Bottle({ flavor, ...props }) {
       // WHAT IS DANG
       const tlWhatIs = gsap.timeline({ scrollTrigger: { trigger: "#section-whatis", start: "100px top", end: "450px top", scrub: 1 } });
       tlWhatIs.to(group.current.rotation, { y: 0, ease: "none" }, 0)
-              .to(group.current.position, { y: 0.2, ease: "power1.inOut" }, 0)
+              .to(group.current.position, { y: 0.4, ease: "power1.inOut" }, 0)
               .to("#bg-layer", { backgroundColor: "#fafafa", ease: "none" }, 0); 
 
       // YUZU ROTATION
