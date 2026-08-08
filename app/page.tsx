@@ -1,5 +1,4 @@
 "use client";
-import Footer from "@/components/Footer";
 import { useLayoutEffect, useEffect, useRef, lazy, Suspense, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -304,7 +303,6 @@ const Index = () => {
 
       </div>
 
-      <Footer />
     </main>
   );
 };

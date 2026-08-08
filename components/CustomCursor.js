@@ -10,10 +10,9 @@ export default function CustomCursor() {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-    // Detect touch devices — hide custom cursor entirely
     const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
     setIsTouchDevice(hasTouch);
-    if (hasTouch) return;
+    if (hasTouch || pathname === '/contact') return;
 
     let isHovering = false;
     let currentHoverTarget = null;
@@ -59,12 +58,13 @@ export default function CustomCursor() {
         const shouldHover = !!target;
         if (shouldHover !== isHovering) {
           isHovering = shouldHover;
-          gsap.to(cursorRef.current, { scale: isHovering ? 1.3 : 1, duration: 0.25 });
+          if (cursorRef.current) gsap.to(cursorRef.current, { scale: isHovering ? 1.3 : 1, duration: 0.25 });
         }
       }
     };
 
     const onMouseMove = (e) => {
+      if (!cursorRef.current) return;
       lastMousePos.x = e.clientX;
       lastMousePos.y = e.clientY;
       
@@ -80,7 +80,7 @@ export default function CustomCursor() {
     };
 
     const onScroll = () => {
-      // Re-check collision because elements moved underneath the stationary mouse
+      if (!cursorRef.current) return;
       if (lastMousePos.x !== -1000) {
         const target = checkCollision(lastMousePos.x, lastMousePos.y);
         updateHoverState(target);
@@ -88,10 +88,12 @@ export default function CustomCursor() {
     };
 
     const onMouseDown = () => {
+      if (!cursorRef.current) return;
       gsap.to(cursorRef.current, { scale: 0.7, duration: 0.12 });
     };
 
     const onMouseUp = () => {
+      if (!cursorRef.current) return;
       gsap.to(cursorRef.current, { scale: isHovering ? 1.3 : 1, duration: 0.15 });
     };
 
@@ -125,7 +127,7 @@ export default function CustomCursor() {
       window.removeEventListener("mouseup", onMouseUp);
       window.removeEventListener("click", onClick, true);
     };
-  }, []);
+  }, [pathname]);
 
   // Don't render the cursor on touch devices or on contact form
   if (isTouchDevice || pathname === '/contact') return null;

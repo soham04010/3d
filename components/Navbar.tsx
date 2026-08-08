@@ -81,7 +81,7 @@ const handleAboutUsClick = (e: React.MouseEvent) => {
             alt="Dang Soda"
             width={160}
             height={60}
-            style={{ objectFit: "contain", maxHeight: "40px" }}
+            style={{ objectFit: "contain", maxHeight: "40px", width: "auto" }}
             priority
           />
         </Link>

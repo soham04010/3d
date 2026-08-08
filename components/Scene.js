@@ -1,8 +1,27 @@
 "use client";
-import { Suspense, useEffect, useState } from "react"; 
+import React, { Suspense, useEffect, useState } from "react"; 
 import { Canvas } from "@react-three/fiber";
 import { Environment, ContactShadows } from "@react-three/drei";
 import Bottle from "./Bottle";
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  componentDidCatch(error) {
+    console.warn("Environment HDR load failed, falling back to default lighting:", error?.message || error);
+  }
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || null;
+    }
+    return this.props.children;
+  }
+}
 
 export default function Scene({ flavor }) {
   // This state prevents the Canvas from rendering until the browser is 100% ready
@@ -29,7 +48,17 @@ export default function Scene({ flavor }) {
         </Suspense>
         
         <ContactShadows position={[0, -2, 0]} opacity={0.5} scale={10} blur={2} far={4.5} />
-        <Environment preset="city" /> 
+        
+        <Suspense fallback={null}>
+          <ErrorBoundary fallback={
+            <group>
+              <directionalLight position={[10, 10, 5]} intensity={1.5} />
+              <directionalLight position={[-10, -10, -5]} intensity={0.8} />
+            </group>
+          }>
+            <Environment preset="city" />
+          </ErrorBoundary>
+        </Suspense>
       </Canvas>
     </div>
   );
