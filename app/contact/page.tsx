@@ -18,7 +18,7 @@ export default function ContactPage() {
     setIsError(false);
     
     const formData = new FormData(form);
-    formData.append("access_key", "aa8354b7-18d4-4419-91da-afd2af041e66");
+    formData.append("access_key", "cb869078-975f-42c9-b383-934264d40353");
     
     const object = Object.fromEntries(formData);
     const json = JSON.stringify(object);
@@ -114,7 +114,7 @@ export default function ContactPage() {
 
         <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-gray-100 flex flex-col gap-1.5 md:gap-2">
           <h3 className="font-sans font-bold text-[9px] md:text-[10px] tracking-widest text-gray-400 uppercase">Our Contacts</h3>
-          <a href="mailto:chaudharisoham041@gmail.com" className="font-sans text-xs md:text-sm font-medium text-black hover:text-gray-600 [&.cursor-colliding]:text-gray-600 transition-colors">chaudharisoham041@gmail.com</a>
+          <a href="mailto:dangbeverage@gmail.com" className="font-sans text-xs md:text-sm font-medium text-black hover:text-gray-600 [&.cursor-colliding]:text-gray-600 transition-colors">dangbeverage@gmail.com</a>
           <a href="tel:+919823482342" className="font-sans text-xs md:text-sm font-medium text-black hover:text-gray-600 [&.cursor-colliding]:text-gray-600 transition-colors">+91 9823482342</a>
         </div>
       </div>
