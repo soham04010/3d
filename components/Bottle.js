@@ -22,7 +22,7 @@ export default function Bottle({ flavor, ...props }) {
   const bodyMaterialRef = useRef([]);
 
   const { scene } = useGLTF('/bottle.glb');
-  const yuzuTexture = useTexture('/yuzu.png');
+  const yuzuTexture = useTexture('/Yuzu1.png');
   const berryTexture = useTexture('/berry.png');
 
   [yuzuTexture, berryTexture].forEach(t => {
@@ -232,5 +232,5 @@ if (!flavor) {
 }
 
 useGLTF.preload('/bottle.glb');
-useTexture.preload('/yuzu.png');
+useTexture.preload('/Yuzu1.png');
 useTexture.preload('/berry.png');
