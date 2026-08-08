@@ -18,7 +18,7 @@ export default function ContactPage() {
     setIsError(false);
     
     const formData = new FormData(form);
-    formData.append("access_key", "2671cc0e-e509-42d7-a527-f3a2e1d06c81");
+    formData.append("access_key", "aa8354b7-18d4-4419-91da-afd2af041e66");
     
     const object = Object.fromEntries(formData);
     const json = JSON.stringify(object);
@@ -57,16 +57,64 @@ export default function ContactPage() {
         <h2 className="text-xl md:text-2xl font-sans font-black mb-2 text-black">Drop a line.</h2>
         <p className="text-gray-400 text-xs md:text-sm mb-4 md:mb-6 font-sans">For the person who makes the smart choice.</p>
         
-   <iframe
-  src="https://drinkdang.com/contact/"
-  width="100%"
-  height="600px"
-  style={{ border: "none" }}
-></iframe>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 font-sans">
+          {/* Honeypot Spam Protection */}
+          <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+
+          <div>
+            <label htmlFor="name" className="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Your Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              placeholder="Alex Smith"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-black text-sm focus:outline-none focus:border-black focus:bg-white transition-all"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="alex@example.com"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-black text-sm focus:outline-none focus:border-black focus:bg-white transition-all"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="message" className="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows={4}
+              placeholder="Tell us what's on your mind..."
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-black text-sm focus:outline-none focus:border-black focus:bg-white transition-all resize-none"
+            ></textarea>
+          </div>
+
+          {submitStatus && (
+            <p className={`text-xs font-semibold px-4 py-2.5 rounded-xl ${isError ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-green-50 text-green-700 border border-green-100'}`}>
+              {submitStatus}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitStatus === "Sending..." || submitStatus === "Sent successfully!"}
+            className="w-full mt-2 py-3.5 bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white rounded-xl font-bold text-xs uppercase tracking-widest transition-all hover:scale-[1.01] active:scale-95 shadow-lg"
+          >
+            {submitStatus === "Sending..." ? "Sending..." : "Send Message"}
+          </button>
+        </form>
 
         <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-gray-100 flex flex-col gap-1.5 md:gap-2">
           <h3 className="font-sans font-bold text-[9px] md:text-[10px] tracking-widest text-gray-400 uppercase">Our Contacts</h3>
-          <a href="mailto:humans@drinkdang.com" className="font-sans text-xs md:text-sm font-medium text-black hover:text-gray-600 [&.cursor-colliding]:text-gray-600 transition-colors">humans@drinkdang.com</a>
+          <a href="mailto:chaudharisoham041@gmail.com" className="font-sans text-xs md:text-sm font-medium text-black hover:text-gray-600 [&.cursor-colliding]:text-gray-600 transition-colors">chaudharisoham041@gmail.com</a>
           <a href="tel:+919823482342" className="font-sans text-xs md:text-sm font-medium text-black hover:text-gray-600 [&.cursor-colliding]:text-gray-600 transition-colors">+91 9823482342</a>
         </div>
       </div>

@@ -54,13 +54,21 @@ export default function ExpandedOverlay({ isOpen, type, onClose, onSwitchType }:
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      gsap.fromTo(
-        ".overlay-content",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
-      );
+      setTimeout(() => {
+        if (document.querySelector(".overlay-content")) {
+          gsap.fromTo(
+            ".overlay-content",
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
+          );
+        }
+      }, 0);
     } else {
       document.body.style.overflow = "auto";
+      if (!document.querySelector(".overlay-content")) {
+        setShouldRender(false);
+        return;
+      }
       gsap.to(".overlay-content", {
         opacity: 0,
         y: 20,
@@ -178,7 +186,7 @@ export default function ExpandedOverlay({ isOpen, type, onClose, onSwitchType }:
               alt="Dang Soda"
               width={110}
               height={40}
-              style={{ objectFit: "contain", maxHeight: "30px" }}
+              style={{ objectFit: "contain", maxHeight: "30px", width: "auto" }}
             />
           </Link>
 

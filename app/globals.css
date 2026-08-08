@@ -3,15 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-helvetica);
-  --font-syne: var(--font-helvetica);
-  --font-serif: var(--font-helvetica);
+  --font-sans: var(--font-cascadia);
+  --font-syne: var(--font-chivo);
+  --font-serif: var(--font-chivo);
 }
 
 @keyframes marquee {
@@ -32,8 +31,8 @@ body {
   background-color: #ffffff;
   color: #000000;
   overflow-x: hidden;
-  /* Helvetica Neue as primary font sitewide */
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  /* Cascadia as primary font sitewide */
+  font-family: var(--font-cascadia) !important;
 }
 
 body:not(.auto-cursor) {
@@ -41,9 +40,9 @@ body:not(.auto-cursor) {
   cursor: none !important;
 }
 
-/* Force Helvetica Neue on ALL elements + hide native cursor */
+/* Force Cascadia on ALL elements + hide native cursor */
 *, *::before, *::after {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  font-family: var(--font-cascadia) !important;
 }
 
 body:not(.auto-cursor) *, body:not(.auto-cursor) *::before, body:not(.auto-cursor) *::after {
