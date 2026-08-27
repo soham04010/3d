@@ -27,27 +27,7 @@ export default function ExpandedOverlay({ isOpen, type, onClose, onSwitchType }:
     if (isOpen) setShouldRender(true);
   }, [isOpen]);
 
-  useEffect(() => {
-    const handlePopState = () => {
-      if (isOpen) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      window.history.pushState({ overlayOpen: true }, "");
-      window.addEventListener("popstate", handlePopState);
-    }
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [isOpen, onClose]);
-
   const handleManualClose = () => {
-    if (typeof window !== "undefined" && window.history.state?.overlayOpen) {
-      window.history.back();
-    }
     onClose();
   };
 
