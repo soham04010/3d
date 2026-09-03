@@ -18,6 +18,12 @@ const Index = () => {
   const [isLoadingFinished, setIsLoadingFinished] = useState(false);
 
   useEffect(() => {
+    if (sessionStorage.getItem('dang_loaded')) {
+      setIsLoadingFinished(true);
+      gsap.set('.loading-overlay', { display: 'none' });
+      return;
+    }
+
     const text = '"A Soda for better you"';
     let i = 0;
     const interval = setInterval(() => {
@@ -31,7 +37,10 @@ const Index = () => {
           window.scrollTo(0, 0);
           gsap.to('.loading-overlay', {
             yPercent: -100, duration: 1.2, ease: 'power4.inOut',
-            onComplete: () => setIsLoadingFinished(true)
+            onComplete: () => {
+              setIsLoadingFinished(true);
+              sessionStorage.setItem('dang_loaded', 'true');
+            }
           });
         }, 2800);
       }

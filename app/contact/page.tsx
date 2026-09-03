@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function ContactPage() {
+  const router = useRouter();
   const [submitStatus, setSubmitStatus] = useState(""); 
   const [isError, setIsError] = useState(false);
 
@@ -51,9 +52,9 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#e5e5e5] flex items-center justify-center px-4 pt-32 pb-12">
       <div className="bg-white p-6 md:p-12 rounded-2xl w-full max-w-md relative shadow-2xl border border-gray-100 mt-8">
-        <Link href="/" className="absolute top-4 right-4 md:top-6 md:right-6 text-gray-400 hover:text-black [&.cursor-colliding]:text-black transition-colors z-10">
+        <button type="button" onClick={() => router.back()} className="absolute top-4 right-4 md:top-6 md:right-6 text-gray-400 hover:text-black [&.cursor-colliding]:text-black transition-colors z-10 cursor-pointer">
           <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </Link>
+        </button>
         <h2 className="text-xl md:text-2xl font-sans font-black mb-2 text-black">Drop a line.</h2>
         <p className="text-gray-400 text-xs md:text-sm mb-4 md:mb-6 font-sans">For the person who makes the smart choice.</p>
         
